@@ -1,30 +1,36 @@
 CFLAGS=-Wall -Werror -O3
 RM=rm
 CC=gcc
-SYS_LIBRARIES=-L/usr/X11R6/lib -lX11 -lm
-DEST=/usr/X11R6/bin
+SYS_LIBRARIES=-lX11 -lm
+DEST=/usr/bin
 
-all: stickman stickread dance xmeltdown
+ALL:=bin/stickman bin/stickread bin/dance bin/xmeltdown
 
+.PHONY: all
+all: $(ALL) 
+
+.PHONY: clean
 clean:
-	-$(RM) -f *.o stickman stickread dance xmeltdown
+	-$(RM) -f *.o $(ALL)
 
-stickman: skel.o draw.o
+bin/stickman: skel.o draw.o
 	$(CC) -o $@ skel.o draw.o $(SYS_LIBRARIES)
 
-stickread: stickread.o draw.o
+bin/stickread: stickread.o draw.o
 	$(CC) -o $@ stickread.o draw.o $(SYS_LIBRARIES)
 
-dance: dance.o draw.o
+bin/dance: dance.o draw.o
 	$(CC) -o $@ dance.o draw.o $(SYS_LIBRARIES)
 
-xmeltdown: xmeltdown.o
+bin/xmeltdown: xmeltdown.o
 	$(CC) -o $@ xmeltdown.o $(SYS_LIBRARIES)
 
+.PHONY: install
+install:
+	install $(ALL) $(DEST)
+
+# dependency information (should be deduced automatically)
 skel.o:	skel.c skel.h
 draw.o:	draw.c skel.h
 stickread.o: stickread.c skel.h
 xmeltdown.o: xmeltdown.c skel.h
-
-install:
-	install stickman stickread dance xmeltdown $(DEST)
