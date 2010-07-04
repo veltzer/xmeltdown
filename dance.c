@@ -25,7 +25,7 @@ void clock_usleep (unsigned long usecs);
 void HandleKeyPress(XKeyEvent* pevent);
 void RandomMove();
 void DrawSkel(SkeletonPtr s,GC gc,Window where);
-void Fill(FILE* filep,RayPtr rayp);
+int Fill(FILE* filep,RayPtr rayp);
 
 extern Display	*dpy;
 extern Window	win;
@@ -392,13 +392,14 @@ char	*filename;
 	return (retval);
 }
 
-void Fill(FILE* filep,RayPtr rayp)
+int Fill(FILE* filep,RayPtr rayp)
 {
 	int	inputthingie1;
 	float	inputthingie2;
-	fscanf(filep, "{%d, %f}\n", &inputthingie1, &inputthingie2);
+	int i=fscanf(filep, "{%d, %f}\n", &inputthingie1, &inputthingie2);
 	rayp->r = inputthingie1;
 	rayp->t = (double) inputthingie2;
+	return i;
 }
 
 void clock_usleep (unsigned long usecs)

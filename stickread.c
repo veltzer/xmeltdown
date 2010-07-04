@@ -11,7 +11,7 @@
 void Initialize(int argc,char** argv);
 void HandleKeyPress(XKeyEvent* pevent);
 void Interpolate(Skeleton** skellist,int steps);
-void Fill(FILE* filep,RayPtr rayp);
+int Fill(FILE* filep,RayPtr rayp);
 void DrawSkel(SkeletonPtr s,GC gc,Window where);
 
 extern Display	*dpy;
@@ -256,11 +256,12 @@ Skeleton** ReadFile(char* filename)
 	return (retval);
 }
 
-void Fill(FILE* filep,RayPtr rayp)
+int Fill(FILE* filep,RayPtr rayp)
 {
 	int	inputthingie1;
 	float	inputthingie2;
-	fscanf(filep, "{%d, %f}\n", &inputthingie1, &inputthingie2);
+	int i=fscanf(filep, "{%d, %f}\n", &inputthingie1, &inputthingie2);
 	rayp->r = inputthingie1;
 	rayp->t = (double) inputthingie2;
+	return i;
 }
