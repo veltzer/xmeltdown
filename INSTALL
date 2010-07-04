@@ -1,0 +1,35 @@
+installation instructions for xmeltdown et al:
+
+Prerequisites:
+0. X11 libraries and headers files to link against.
+	If they are not in the usual place then edit Makefile
+	to reflect so.
+1. GNU make. I don't know if other make systems will eat my
+	Makfile. Oh yes - I don't even care... GNU rulez!!!
+2. gcc. Only tested this with GCC. See (1).
+3. XFree. Only tested it with XFree. You may get it to run with
+	other X implementations. But you may even make it to
+	Mars if you join NASA today...
+
+Here come the real instructions:
+0. Look at Makefile and make sure that the parameters
+	are ok for your system. Especially look at the
+	DEST parameter which is where the binaries will
+	reside.
+1. compile using "make". If there are problems then go
+	fix them. Problems could include:
+	a. compiler include paths.
+	b. gcc to be replaced with some other compiler.
+	c. flags to the compiler to be changed.
+	d. prototype problems.
+	And much much more!!!
+2. run "make install". This stage has to be done as root
+	if you're installing in a root owned directory. No
+	need to be root if you'll just keep the binaries in
+	your home directory or in a directory that you have
+	write permission to.
+
+Have fun!
+
+	Mark Veltzer
+	<mark@veltzer.org>
