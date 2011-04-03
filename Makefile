@@ -14,15 +14,19 @@ clean:
 	-$(RM) -f *.o $(ALL)
 
 bin/stickman: skel.o draw.o
+	-mkdir $(dir $@)
 	$(CC) -o $@ skel.o draw.o $(SYS_LIBRARIES)
 
 bin/stickread: stickread.o draw.o
+	-mkdir $(dir $@)
 	$(CC) -o $@ stickread.o draw.o $(SYS_LIBRARIES)
 
 bin/dance: dance.o draw.o
+	-mkdir $(dir $@)
 	$(CC) -o $@ dance.o draw.o $(SYS_LIBRARIES)
 
 bin/xmeltdown: xmeltdown.o
+	-mkdir $(dir $@)
 	$(CC) -o $@ xmeltdown.o $(SYS_LIBRARIES)
 
 .PHONY: install

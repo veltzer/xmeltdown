@@ -1,3 +1,4 @@
 TODO:
 1. Add real dependency calculations to the makefile.
 2. Add autoconf script (even empty for now).
+3. Add dependency on the makefile itself.
