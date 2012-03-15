@@ -103,9 +103,11 @@ void Interpolate(Skeleton** skellist,int steps)
 	int	bonesize = sizeof(Ray);
 	Skeleton	*skel1, *skel2;
 	int		stepctr, skelctr, bone;
-	Skeleton	tween1, tween2;
+	Skeleton	tween1;
+	//Skeleton	tween2;
 	double		factor;
-	Skeleton	*oldskel = NULL, *newskel = NULL;
+	//Skeleton	*oldskel;
+       	Skeleton	*newskel = NULL;
 	/* Skeleton *tempskel; */
 	int		curbuf = 0;
 	int		flag1 = 1;
@@ -114,14 +116,14 @@ void Interpolate(Skeleton** skellist,int steps)
 	int		flag4 = 0;
 
 	newskel = &tween1;
-	oldskel = &tween2;
+	//oldskel = &tween2;
 
 	for (skelctr = 0; skellist[skelctr+1] != NULL; skelctr++) {
 		skel1 = skellist[skelctr];
 		skel2 = skellist[skelctr + 1];
 
 		tween1.headradius = skel1->headradius;
-		tween2.headradius = skel2->headradius;
+		//tween2.headradius = skel2->headradius;
 
 		for (stepctr = 0; stepctr < steps; stepctr++) {
 			factor = (double) (steps - stepctr) / (double) steps;
