@@ -4,9 +4,6 @@
 #include <X11/Xutil.h>
 #include <stdlib.h>
 #include "skel.h"
-/*
- * Bug fixes and forward port to Linux,gcc-3.2 by Mark Veltzer <mark@veltzer.org>
- */
 
 void DrawLines(XPoint* pointlist, int pointcount, GC gc, Window where);
 void EndPoint(RayPtr targetRay, double currentT);

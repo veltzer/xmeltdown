@@ -6,10 +6,6 @@
 #include <X11/keysym.h>
 #include "skel.h"
 
-/*
- * Bug fixes and forward port to Linux,gcc-3.2 by Mark Veltzer <mark@veltzer.org>
- */
-
 void Initialize(int, char**);
 void DrawSkel(SkeletonPtr s, GC gc, Window where);
 void HandleKeyPress(XKeyEvent* pevent);

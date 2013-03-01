@@ -1,6 +1,3 @@
-/*
- * Bug fixes and forward port to Linux,gcc-3.2 by Mark Veltzer <mark@veltzer.org>
- */
 typedef struct ray{
 	int		r;		/* How long this Ray is */
 	double		t;		/* at what angle (polar) from anchor */

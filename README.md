@@ -13,7 +13,7 @@ xmeltdown again. Copyright of most of the stuff still belongs to the
 original authors. Free source never dies.
 
 					Mark Veltzer, 05/12/2002
-					<mark@veltzer.org>
+					<mark.veltzer@gmail.com>
 
 P.S. All of my fixes are under the original OSS license.
 

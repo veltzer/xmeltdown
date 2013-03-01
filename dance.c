@@ -1,7 +1,3 @@
-/*
- * Bug fixes and forward port to Linux,gcc-3.2 by Mark Veltzer <mark@veltzer.org>
- */
-
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
