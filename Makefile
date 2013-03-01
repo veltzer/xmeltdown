@@ -87,6 +87,11 @@ debug: $(ALL_DEP)
 	$(info CC is $(CC))
 	$(info ALL is $(ALL))
 
+.PHONY: format_uncrustify
+format_uncrustify: $(ALL_DEP)
+	$(info doing [$@])
+	$(Q)uncrustify -c support/uncrustify.cfg --no-backup -l C $(SRC)
+
 #################
 # Generic rules #
 #################
