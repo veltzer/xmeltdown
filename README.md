@@ -1,3 +1,5 @@
+Xmeltdown
+=========
 When I was back in the UNI I used to move people away from machine by running
 xmeltdown on their machines. The user is happily working on his machine and
 suddenly the whole screen seems to melt. All you need to run this is X access
@@ -8,10 +10,13 @@ package but to no avail. I stumbled across a set of old source on some http
 server in MIT and rescued them from obscurity. A lot of compilation fixes
 and some cleanups and bug fixes went into this and you can happily run
 xmeltdown again. Copyright of most of the stuff still belongs to the
-original authors. Open source never dies.
-
+original authors. Free source never dies.
 
 					Mark Veltzer, 05/12/2002
 					<mark@veltzer.org>
 
 P.S. All of my fixes are under the original OSS license.
+
+Copyright
+---------
+Mark Veltzer <mark.veltzer@gmail.com>, 2002-2013

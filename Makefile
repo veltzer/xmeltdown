@@ -1,40 +1,103 @@
-CFLAGS=-Wall -Werror -O3
-RM=rm
-CC=gcc
-SYS_LIBRARIES=-lX11 -lm
-DEST=/usr/bin
+##############
+# Parameters #
+##############
+# do you want to debug the makefile ?
+DO_MKDBG?=0
+# do you want dependency on the Makefile itself ?
+DO_ALLDEP:=1
+# flags for compilation
+CFLAGS:=-Wall -Werror -O3
+# libraries to link with
+LDFLAGS:=-lX11 -lm
+# where to install ?
+DEST:=/usr/local/bin
+# where to put binaries ?
+BIN_FOLDER:=bin
 
-ALL:=bin/stickman bin/stickread bin/dance bin/xmeltdown
+#########################
+# Processing parameters #
+#########################
+SRC:=$(shell find . -name "*.c")
+OBJ:=$(addsuffix .o,$(basename $(SRC)))
+ALL:=$(BIN_FOLDER)/stickman $(BIN_FOLDER)/stickread $(BIN_FOLDER)/dance $(BIN_FOLDER)/xmeltdown
 
+# dependency on the makefile itself
+ifeq ($(DO_ALLDEP),1)
+ALL_DEP:=Makefile
+else
+ALL_DEP:=
+endif
+
+# silent stuff
+ifeq ($(DO_MKDBG),1)
+Q:=
+# we are not silent in this branch
+else # DO_MKDBG
+Q:=@
+#.SILENT:
+endif # DO_MKDBG
+
+#########
+# Rules #
+#########
 .PHONY: all
-all: $(ALL) 
+all: $(ALL) $(ALL_DEP)
+	$(info doing [$@])
 
 .PHONY: clean
-clean:
-	-$(RM) -f *.o $(ALL)
+clean: $(ALL_DEP)
+	$(info doing [$@])
+	$(Q)-rm -rf *.o $(BIN_FOLDER)
 
-bin/stickman: skel.o draw.o
-	-@mkdir -p $(dir $@)
-	$(CC) -o $@ skel.o draw.o $(SYS_LIBRARIES)
+$(BIN_FOLDER)/stickman: skel.o draw.o $(ALL_DEP)
+	$(info doing [$@])
+	$(Q)mkdir -p $(dir $@)
+	$(Q)$(CC) -o $@ skel.o draw.o $(LDFLAGS)
 
-bin/stickread: stickread.o draw.o
-	-@mkdir -p $(dir $@)
-	$(CC) -o $@ stickread.o draw.o $(SYS_LIBRARIES)
+$(BIN_FOLDER)/stickread: stickread.o draw.o $(ALL_DEP)
+	$(info doing [$@])
+	$(Q)mkdir -p $(dir $@)
+	$(Q)$(CC) -o $@ stickread.o draw.o $(LDFLAGS)
 
-bin/dance: dance.o draw.o
-	-@mkdir -p $(dir $@)
-	$(CC) -o $@ dance.o draw.o $(SYS_LIBRARIES)
+$(BIN_FOLDER)/dance: dance.o draw.o $(ALL_DEP)
+	$(info doing [$@])
+	$(Q)mkdir -p $(dir $@)
+	$(Q)$(CC) -o $@ dance.o draw.o $(LDFLAGS)
 
-bin/xmeltdown: xmeltdown.o
-	-@mkdir -p $(dir $@)
-	$(CC) -o $@ xmeltdown.o $(SYS_LIBRARIES)
+$(BIN_FOLDER)/xmeltdown: xmeltdown.o $(ALL_DEP)
+	$(info doing [$@])
+	$(Q)mkdir -p $(dir $@)
+	$(Q)$(CC) -o $@ xmeltdown.o $(LDFLAGS)
 
 .PHONY: install
-install:
-	install $(ALL) $(DEST)
+install: $(ALL_DEP)
+	$(info doing [$@])
+	$(Q)install $(ALL) $(DEST)
 
-# dependency information (should be deduced automatically)
-skel.o:	skel.c skel.h
-draw.o:	draw.c skel.h
-stickread.o: stickread.c skel.h
-xmeltdown.o: xmeltdown.c skel.h
+.PHONY: depend
+depend: $(ALL_DEP)
+	$(info doing [$@])
+	$(Q)makedepend -Y -- $(CFLAGS) -- $(SRC) 2> /dev/null
+	$(Q)rm -f Makefile.bak
+
+.PHONY: debug
+debug: $(ALL_DEP)
+	$(info SRC is $(SRC))
+	$(info OBJ is $(OBJ))
+	$(info CC is $(CC))
+	$(info ALL is $(ALL))
+
+#################
+# Generic rules #
+#################
+$(OBJ): %.o: %.c $(ALL_DEP)
+	$(info doing [$@])
+	$(Q)mkdir -p $(dir $@)
+	$(Q)$(CC) $(CFLAGS) -c -o $@ $<
+
+# DO NOT DELETE
+
+./dance.o: skel.h
+./skel.o: skel.h
+./stickread.o: skel.h
+./draw.o: skel.h

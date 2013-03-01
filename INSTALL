@@ -1,5 +1,3 @@
-installation instructions for xmeltdown et al:
-
 Prerequisites:
 0. X11 libraries and headers files to link against.
 	If they are not in the usual place then edit Makefile
@@ -23,7 +21,7 @@ Here come the real instructions:
 	c. flags to the compiler to be changed.
 	d. prototype problems.
 	And much much more!!!
-2. run "make install". This stage has to be done as root
+2. run "sudo make install". This stage has to be done with sudo
 	if you're installing in a root owned directory. No
 	need to be root if you'll just keep the binaries in
 	your home directory or in a directory that you have
@@ -31,5 +29,4 @@ Here come the real instructions:
 
 Have fun!
 
-	Mark Veltzer
-	<mark@veltzer.org>
+	Mark Veltzer <mark.veltzer@gmail.com>
