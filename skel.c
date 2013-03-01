@@ -18,8 +18,8 @@ void HandleButtonRelease(XButtonEvent* pevent);
 void HandleMotion(XMotionEvent* pevent);
 void DumpSkel(SkeletonPtr s);
 void FlashRay(RayPtr targetray);
-RayPtr FindNearestRay();
-double FindDistance();
+RayPtr FindNearestRay(XButtonEvent* pevent);
+double FindDistance(int x, int y, RayPtr rayp);
 
 extern Display* dpy;
 extern Window win;

@@ -13,6 +13,8 @@ LDFLAGS:=-lX11 -lm
 DEST:=/usr/local/bin
 # where to put binaries ?
 BIN_FOLDER:=bin
+# what compiler to use ?
+CC:=gcc
 
 #########################
 # Processing parameters #

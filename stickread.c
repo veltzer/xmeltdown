@@ -13,14 +13,15 @@ void HandleKeyPress(XKeyEvent* pevent);
 void Interpolate(Skeleton** skellist, int steps);
 int Fill(FILE* filep, RayPtr rayp);
 void DrawSkel(SkeletonPtr s, GC gc, Window where);
+Skeleton** ReadFile(char* filename);
 
 extern Display* dpy;
 extern Window win;
 extern Window buffer[2];
-Skeleton**ReadFile();
-int waistx;
-int waisty;
-GC set_gc, noop_gc, unset_gc, neg_gc;
+
+static int waistx;
+static int waisty;
+static GC set_gc, noop_gc, unset_gc, neg_gc;
 
 int main(int argc, char** argv)
 {

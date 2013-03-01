@@ -26,13 +26,13 @@ void HandleKeyPress(XKeyEvent* pevent);
 void RandomMove();
 void DrawSkel(SkeletonPtr s, GC gc, Window where);
 int Fill(FILE* filep, RayPtr rayp);
+Skeleton**ReadFile(char* filename);
+int*ReadRoutineFile(char* filename);
 
 extern Display* dpy;
 extern Window win;
 extern Window buffer[2];
-Skeleton**ReadFile();
 Skeleton tween[PLAYERS];
-int*ReadRoutineFile();
 int waistx;
 int waisty;
 GC set_gc, noop_gc, unset_gc, neg_gc;
@@ -137,7 +137,7 @@ void DanceMainLoop(int* routine)
 	while (1) {
 		for (stepctr=1; stepctr <= steps; stepctr++) {
 			factor=(double) (steps-stepctr)/(double) steps;
-			ClearFrame(curbuf);
+			ClearFrame();
 			for (i=0; i < PLAYERS; i++)
 				DrawTween(factor, i, curbuf);
 			ShowFrame(curbuf);
@@ -245,9 +245,8 @@ void DrawTween(double factor, int which, int curbuf)
 	DrawSkel(tweenskel[which], unset_gc, buffer[!curbuf]);
 }
 
-int curbuf;
-void ClearFrame()
-{
+static int curbuf;
+void ClearFrame() {
 	XClearWindow(dpy, buffer[!curbuf]);
 }
 
