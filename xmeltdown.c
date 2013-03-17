@@ -222,9 +222,11 @@ void do_all()
 			XSync(dpy, 0);
 			over=1;
 		}
-		// usleep(1);
+		usleep(1000);
+		/*
 		for(i=0; i<1900000; i++) {
 		}
+		*/
 	}
 }
 
