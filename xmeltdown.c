@@ -37,23 +37,21 @@
 
 #include <X11/Xlib.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdlib.h>	// for EXIT_SUCCESS, EXIT_FAILURE, exit(3)
 #include <sys/types.h>
 #include <unistd.h>
 #include <string.h>
 
 #define MIN_SIZE 10
 #define MAX_SIZE 100
-
-#define MIN_DIST 10
-
+//#define MIN_DIST 10
+#define MIN_DIST 2
 #define MIN_WIDTH 30
 #define WIDTH_ADD 20
-
 #define FINISHED 50
+#define USLEEP 1000
 
 #define rnd(x) (random()%(x))
-
 #define min(a, b) ((a) < (b) ? (a) : (b))
 #define max(a, b) ((a) > (b) ? (a) : (b))
 
@@ -66,17 +64,14 @@ Window win;
 GC copygc, fillgc;
 int screen;
 int depth;
-
 short** heights;
 
-void usage(void)
-{
+void usage(void) {
 	fprintf(stderr, "Usage: meltdown [-planes] [-display <displayname>]\n");
-	exit(1);
+	exit(EXIT_FAILURE);
 }
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv, char** envp) {
 	char *display=NULL;
 	unsigned long vmask;
 	XSetWindowAttributes xswat;
@@ -122,28 +117,26 @@ int main(int argc, char** argv)
 	fillgc=XCreateGC(dpy, win, GCForeground, &gcvals);
 
 	XSync(dpy, 0);
-	// sleep(1);
 	if (use_planes) {
 		do_planes();
 	} else {
 		do_all();
 	}
-	/* NOTREACHED */
-	sleep(20);
-	return(0);
+	sleep(2);
+	return EXIT_SUCCESS;
 }
 
-void do_planes()
-{
+void do_planes() {
 	int over=0;
 	int finished=0;
 	int width, xloc, yloc, dist, size, i;
 	short** heights;
 
 	heights=(short **) malloc(DisplayPlanes(dpy, screen));
-	for (i=0; i < DisplayPlanes(dpy, screen); i++)
+	for (i=0; i < DisplayPlanes(dpy, screen); i++) {
 		heights[i]=(short *) calloc(sizeof(short),
 			DisplayWidth(dpy, screen));
+	}
 	while (!over) {
 		depth=rnd(DisplayPlanes(dpy, screen));
 		width=rnd(MIN_WIDTH)+WIDTH_ADD;
@@ -181,8 +174,7 @@ void do_planes()
 	}
 }
 
-void do_all()
-{
+void do_all() {
 	int over;
 	int finished=0;
 	int width, xloc, yloc, dist, size, i;
@@ -222,18 +214,12 @@ void do_all()
 			XSync(dpy, 0);
 			over=1;
 		}
-		usleep(1000);
-		/*
-		for(i=0; i<1900000; i++) {
-		}
-		*/
+		usleep(USLEEP);
 	}
 }
 
-int calc_xloc(int width)
-{
+int calc_xloc(int width) {
 	int xloc;
-
 	/* give values near edges a better chance */
 	xloc=rnd(DisplayWidth(dpy, screen)+MIN_WIDTH)-MIN_WIDTH;
 	if ((xloc+width) > DisplayWidth(dpy, screen))
