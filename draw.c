@@ -25,7 +25,7 @@ void DumpSkel(SkeletonPtr s)
 ** Yes, I KNOW the following is a disgusting way to step through all the
 ** ray elements of the skeleton data structure. So there! Neah neah neah.
 */
-	for (stepray=&(s->torso); stepray <= &(s->ltricep); stepray=(RayPtr) ((int) stepray+(int) stepsize)) {
+	for (stepray=&(s->torso); stepray <= &(s->ltricep); stepray=(RayPtr) ((long) stepray+(long) stepsize)) {
 		printf ("	{%d, %f}\n", stepray->r, stepray->t);
 	}
 	fflush(stdout);

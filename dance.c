@@ -219,9 +219,9 @@ void DrawTween(double factor, int which, int curbuf)
  * int		flag3 = 1;
  * int		flag4 = 0; */
 	for (bone=0; bone < 11; bone++) {
-		fromray=(RayPtr) ((int) &(fromskel[which]->torso)+(int) (bone*bonesize));
-		toray=(RayPtr) ((int) &(toskel[which]->torso)+(int) (bone*bonesize));
-		tweenray=(RayPtr) ((int) &(tweenskel[which]->torso)+(int) (bone*bonesize));
+		fromray=(RayPtr) ((long) &(fromskel[which]->torso)+(long) (bone*bonesize));
+		toray=(RayPtr) ((long) &(toskel[which]->torso)+(long) (bone*bonesize));
+		tweenray=(RayPtr) ((long) &(tweenskel[which]->torso)+(long) (bone*bonesize));
 /*
 ** Never rotate through an angle > PI. I.e., take the shortest path.
 */

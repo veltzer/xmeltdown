@@ -118,9 +118,9 @@ void Interpolate(Skeleton** skellist, int steps)
 		for (stepctr=0; stepctr < steps; stepctr++) {
 			factor=(double) (steps-stepctr)/(double) steps;
 			for (bone=0; bone < 11; bone++) {
-				from=(RayPtr)((int) &(skel1->torso)+(int) (bone*bonesize));
-				to=(RayPtr) ((int) &(skel2->torso)+(int) (bone*bonesize));
-				tweenray=(RayPtr) ((int) &(newskel->torso)+(int) (bone*bonesize));
+				from=(RayPtr)((long) &(skel1->torso)+(long) (bone*bonesize));
+				to=(RayPtr) ((long) &(skel2->torso)+(long) (bone*bonesize));
+				tweenray=(RayPtr) ((long) &(newskel->torso)+(long) (bone*bonesize));
 /*
 ** Never rotate through an angle > PI. I.e., take the shortest path.
 */
