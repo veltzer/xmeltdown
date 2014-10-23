@@ -2,7 +2,7 @@
 # Parameters #
 ##############
 # do you want to debug the makefile ?
-DO_MKDBG?=0
+DO_MKDBG:=0
 # do you want dependency on the Makefile itself ?
 DO_ALLDEP:=1
 # flags for compilation
