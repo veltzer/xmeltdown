@@ -16,7 +16,7 @@ BIN_FOLDER:=bin
 # version of gcc
 GCCVER:=$(shell gcc --version | head -1 | cut -f 4 -d " ")
 # short version of GCC
-GCCVER_SHORT:=4.9
+GCCVER_SHORT:=$(shell echo $(GCCVER)| cut -b 1-3)
 
 #########################
 # Processing parameters #
@@ -101,6 +101,7 @@ debug: $(ALL_DEP)
 	$(info CC is $(CC))
 	$(info ALL is $(ALL))
 	$(info GCCVER is $(GCCVER))
+	$(info GCCVER_SHORT is $(GCCVER_SHORT))
 
 .PHONY: format_uncrustify
 format_uncrustify: $(ALL_DEP)
@@ -139,6 +140,9 @@ $(OBJ): %.o: %.c $(ALL_DEP)
 ./grid.o: /usr/include/X11/X.h /usr/include/X11/Xfuncproto.h
 ./grid.o: /usr/include/X11/Xosdefs.h /usr/include/X11/Xutil.h
 ./grid.o: /usr/include/X11/keysym.h /usr/include/X11/keysymdef.h
+./grid.o: /usr/include/c++/4.9.2/tr1/stdlib.h
+./grid.o: /usr/include/c++/4.9.2/tr1/cstdlib
+./grid.o: /usr/include/c++/4.9.2/tr1/cstdlib
 ./stickman.o: /usr/include/c++/4.9.2/tr1/math.h
 ./stickman.o: /usr/include/c++/4.9.2/tr1/cmath
 ./stickman.o: /usr/include/c++/4.9.2/tr1/cmath
