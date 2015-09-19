@@ -3,7 +3,7 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <stdlib.h>
-#include "skel.h"
+#include "stickman.h"
 
 void Initialize(int argc, char** argv);
 void HandleKeyPress(XKeyEvent* pevent);

@@ -6,7 +6,7 @@
 #include <sys/types.h>
 #include <sys/time.h>
 
-#include "skel.h"
+#include "stickman.h"
 
 #define PLAYERS 3
 #define OFFSET 100

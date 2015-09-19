@@ -4,7 +4,7 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
-#include "skel.h"
+#include "stickman.h"
 
 void Initialize(int, char**);
 void DrawSkel(SkeletonPtr s, GC gc, Window where);

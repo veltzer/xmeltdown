@@ -3,7 +3,7 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <stdlib.h>
-#include "skel.h"
+#include "stickman.h"
 
 void DrawLines(XPoint* pointlist, int pointcount, GC gc, Window where);
 void EndPoint(RayPtr targetRay, double currentT);

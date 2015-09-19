@@ -19,4 +19,4 @@ P.S. All of my fixes are under the original OSS license.
 
 Copyright
 ---------
-Mark Veltzer <mark.veltzer@gmail.com>, 2002-2014
+Mark Veltzer <mark.veltzer@gmail.com>, 2002-2015

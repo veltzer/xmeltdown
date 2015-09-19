@@ -1,42 +1,12 @@
 #include <stdio.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+#include <stdlib.h>	// for exit(3)
 
-GC gc_list[16];
-
-Display *dpy;
-Window win;
-int screen;
-
-int main(int argc, char** argv)
-{
-	XGCValues my_gcvalues;
-	XEvent my_event;
-	int counter;
-
-	Initialize(argc, argv);
-
-	XSelectInput(dpy, win,
-		ExposureMask|ButtonPressMask|ButtonReleaseMask|
-		ButtonMotionMask|KeyPressMask);
-
-	my_gcvalues.line_width=5;
-	my_gcvalues.line_style=LineSolid;
-	for (counter=0; counter < 16; counter++) {
-		my_gcvalues.function=counter;
-
-		gc_list[counter]=XCreateGC(dpy, win,
-			GCFunction|GCLineWidth|GCLineStyle,
-			&my_gcvalues);
-	}
-	while (1) {
-		XNextEvent (dpy, &my_event);
-		if (my_event.type == Expose)
-			DrawGrid();
-		if (my_event.type == ButtonPress)
-			DrawGrid();
-	}
-}
+static GC gc_list[16];
+static Display *dpy;
+static Window win;
+static int screen;
 
 void Initialize(int argc, char** argv)
 {
@@ -67,8 +37,7 @@ void Initialize(int argc, char** argv)
 	XMapWindow(dpy, win);
 }
 
-void DrawGrid(void)
-{
+void DrawGrid(void) {
 	int fromx, fromy, tox, toy;
 	int counter;
 	for (counter=0; counter < 16; counter++) {
@@ -94,10 +63,36 @@ void DrawGrid(void)
 ** Given a list of points, draw line segments between them.
 */
 
-DrawLines(pointlist, pointcount, gc)
-XPoint*pointlist;
-int pointcount;
-GC gc;
-{
+void DrawLines(XPoint* pointlist, int pointcount, GC gc) {
 	XDrawLines (dpy, win, gc, pointlist, pointcount, CoordModeOrigin);
 }
+
+int main(int argc, char** argv) {
+	XGCValues my_gcvalues;
+	XEvent my_event;
+	int counter;
+
+	Initialize(argc, argv);
+
+	XSelectInput(dpy, win,
+		ExposureMask|ButtonPressMask|ButtonReleaseMask|
+		ButtonMotionMask|KeyPressMask);
+
+	my_gcvalues.line_width=5;
+	my_gcvalues.line_style=LineSolid;
+	for (counter=0; counter < 16; counter++) {
+		my_gcvalues.function=counter;
+
+		gc_list[counter]=XCreateGC(dpy, win,
+			GCFunction|GCLineWidth|GCLineStyle,
+			&my_gcvalues);
+	}
+	while (1) {
+		XNextEvent (dpy, &my_event);
+		if (my_event.type == Expose)
+			DrawGrid();
+		if (my_event.type == ButtonPress)
+			DrawGrid();
+	}
+}
+
