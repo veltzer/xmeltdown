@@ -1,0 +1,5 @@
+- get ridd of make depend and do dependencies better.
+	This is because 'make depend' causes frequent changes
+	to the Makefile which is bad (the Makefile is
+	a source file and this causes many commits to
+	this file).
