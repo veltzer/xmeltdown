@@ -4,3 +4,5 @@
 Makefile.bak
 # binary files
 bin
+# tools
+/tools

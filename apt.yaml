@@ -1,0 +1,6 @@
+---
+packages:
+        - name: xutils-dev
+          reason: for makedepend(1)
+        - name: 'libx11-dev'
+          reason: for the X11 API
