@@ -46,7 +46,7 @@ endif # DO_MKDBG
 #########
 .PHONY: all
 all: $(ALL) $(ALL_DEP)
-	$(info doing [$@])
+	@true
 
 .PHONY: clean
 clean: $(ALL_DEP)
