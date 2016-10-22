@@ -22,7 +22,7 @@ GCCVER_SHORT:=$(shell echo $(GCCVER)| cut -b 1-3)
 # Processing parameters #
 #########################
 SRC:=$(shell find . -name "*.c")
-OBJ:=$(addsuffix .o,$(basename $(SRC)))
+OBJ:=$(addprefix obj/,$(notdir $(addsuffix .o,$(basename $(SRC)))))
 ALL:=$(BIN_FOLDER)/stickman $(BIN_FOLDER)/stickread $(BIN_FOLDER)/dance $(BIN_FOLDER)/xmeltdown $(BIN_FOLDER)/grid
 
 # dependency on the makefile itself
@@ -58,30 +58,35 @@ clean_git: $(ALL_DEP)
 	$(info doing [$@])
 	$(Q)git clean -xdf > /dev/null
 
-$(BIN_FOLDER)/grid: grid.o $(ALL_DEP)
+OBJ_GRID:=obj/grid.o
+$(BIN_FOLDER)/grid: $(OBJ_GRID) $(ALL_DEP)
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
-	$(Q)$(CC) -o $@ grid.o $(LDFLAGS)
+	$(Q)$(CC) -o $@ $(OBJ_GRID) $(LDFLAGS)
 
-$(BIN_FOLDER)/stickman: stickman.o draw.o $(ALL_DEP)
+OBJ_STICKMAN:=obj/stickman.o obj/draw.o
+$(BIN_FOLDER)/stickman: $(OBJ_STICKMAN) $(ALL_DEP)
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
-	$(Q)$(CC) -o $@ stickman.o draw.o $(LDFLAGS)
+	$(Q)$(CC) -o $@ $(OBJ_STICKMAN) $(LDFLAGS)
 
-$(BIN_FOLDER)/stickread: stickread.o draw.o $(ALL_DEP)
+OBJ_STICKREAD:=obj/stickread.o obj/draw.o
+$(BIN_FOLDER)/stickread: $(OBJ_STICKREAD) $(ALL_DEP)
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
-	$(Q)$(CC) -o $@ stickread.o draw.o $(LDFLAGS)
+	$(Q)$(CC) -o $@ $(OBJ_STICKREAD) $(LDFLAGS)
 
-$(BIN_FOLDER)/dance: dance.o draw.o $(ALL_DEP)
+OBJ_DANCE:=obj/dance.o obj/draw.o
+$(BIN_FOLDER)/dance: $(OBJ_DANCE) $(ALL_DEP)
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
-	$(Q)$(CC) -o $@ dance.o draw.o $(LDFLAGS)
+	$(Q)$(CC) -o $@ $(OBJ_DANCE) $(LDFLAGS)
 
-$(BIN_FOLDER)/xmeltdown: xmeltdown.o $(ALL_DEP)
+OBJ_XMELTDOWN:=obj/xmeltdown.o
+$(BIN_FOLDER)/xmeltdown: $(OBJ_XMELTDOWN) $(ALL_DEP)
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
-	$(Q)$(CC) -o $@ xmeltdown.o $(LDFLAGS)
+	$(Q)$(CC) -o $@ $(OBJ_XMELTDOWN) $(LDFLAGS)
 
 .PHONY: install
 install: $(ALL_DEP)
@@ -111,305 +116,316 @@ format_uncrustify: $(ALL_DEP)
 #################
 # Generic rules #
 #################
-$(OBJ): %.o: %.c $(ALL_DEP)
+$(OBJ): obj/%.o: src/%.c $(ALL_DEP)
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(CC) $(CFLAGS) -c -o $@ $<
 
 # DO NOT DELETE
 
-./draw.o: /usr/include/c++/6.2.0/tr1/math.h /usr/include/c++/6.2.0/tr1/cmath
-./draw.o: /usr/include/c++/6.2.0/tr1/cmath
-./draw.o: /usr/include/c++/6.2.0/bits/stl_algobase.h
-./draw.o: /usr/include/c++/6.2.0/bits/functexcept.h
-./draw.o: /usr/include/c++/6.2.0/bits/exception_defines.h
-./draw.o: /usr/include/c++/6.2.0/bits/cpp_type_traits.h
-./draw.o: /usr/include/c++/6.2.0/ext/type_traits.h
-./draw.o: /usr/include/c++/6.2.0/ext/numeric_traits.h
-./draw.o: /usr/include/c++/6.2.0/bits/stl_pair.h
-./draw.o: /usr/include/c++/6.2.0/bits/move.h
-./draw.o: /usr/include/c++/6.2.0/bits/concept_check.h
-./draw.o: /usr/include/c++/6.2.0/bits/stl_iterator_base_types.h
-./draw.o: /usr/include/c++/6.2.0/bits/stl_iterator_base_funcs.h
-./draw.o: /usr/include/c++/6.2.0/debug/assertions.h
-./draw.o: /usr/include/c++/6.2.0/bits/stl_iterator.h
-./draw.o: /usr/include/c++/6.2.0/bits/ptr_traits.h
-./draw.o: /usr/include/c++/6.2.0/debug/debug.h
-./draw.o: /usr/include/c++/6.2.0/bits/predefined_ops.h
-./draw.o: /usr/include/c++/6.2.0/limits
-./draw.o: /usr/include/c++/6.2.0/tr1/type_traits
-./draw.o: /usr/include/c++/6.2.0/tr1/gamma.tcc
-./draw.o: /usr/include/c++/6.2.0/tr1/special_function_util.h
-./draw.o: /usr/include/c++/6.2.0/tr1/bessel_function.tcc
-./draw.o: /usr/include/c++/6.2.0/tr1/special_function_util.h
-./draw.o: /usr/include/c++/6.2.0/tr1/beta_function.tcc
-./draw.o: /usr/include/c++/6.2.0/tr1/ell_integral.tcc
-./draw.o: /usr/include/c++/6.2.0/tr1/exp_integral.tcc
-./draw.o: /usr/include/c++/6.2.0/tr1/hypergeometric.tcc
-./draw.o: /usr/include/c++/6.2.0/tr1/legendre_function.tcc
-./draw.o: /usr/include/c++/6.2.0/tr1/modified_bessel_func.tcc
-./draw.o: /usr/include/c++/6.2.0/tr1/poly_hermite.tcc
-./draw.o: /usr/include/c++/6.2.0/tr1/poly_laguerre.tcc
-./draw.o: /usr/include/c++/6.2.0/tr1/riemann_zeta.tcc
-./draw.o: /usr/include/c++/6.2.0/tr1/stdio.h
-./draw.o: /usr/include/c++/6.2.0/tr1/cstdio /usr/include/c++/6.2.0/tr1/cstdio
-./draw.o: /usr/include/X11/Xlib.h /usr/include/sys/types.h
-./draw.o: /usr/include/features.h /usr/include/stdc-predef.h
-./draw.o: /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h
-./draw.o: /usr/include/gnu/stubs.h /usr/include/bits/types.h
-./draw.o: /usr/include/bits/typesizes.h /usr/include/linux/time.h
-./draw.o: /usr/include/linux/types.h /usr/include/asm/types.h
-./draw.o: /usr/include/asm-generic/types.h
-./draw.o: /usr/include/asm-generic/int-ll64.h /usr/include/asm/bitsperlong.h
-./draw.o: /usr/include/asm-generic/bitsperlong.h
-./draw.o: /usr/include/linux/posix_types.h /usr/include/linux/stddef.h
-./draw.o: /usr/include/asm/posix_types.h /usr/include/asm/posix_types_64.h
-./draw.o: /usr/include/asm-generic/posix_types.h /usr/include/linux/stddef.h
-./draw.o: /usr/include/endian.h /usr/include/bits/endian.h
-./draw.o: /usr/include/bits/byteswap.h /usr/include/bits/byteswap-16.h
-./draw.o: /usr/include/sys/select.h /usr/include/bits/select.h
-./draw.o: /usr/include/bits/sigset.h /usr/include/bits/time.h
-./draw.o: /usr/include/sys/sysmacros.h /usr/include/bits/pthreadtypes.h
-./draw.o: /usr/include/X11/X.h /usr/include/X11/Xfuncproto.h
-./draw.o: /usr/include/X11/Xosdefs.h /usr/include/X11/Xutil.h
-./draw.o: /usr/include/X11/keysym.h /usr/include/X11/keysymdef.h
-./draw.o: /usr/include/c++/6.2.0/tr1/stdlib.h
-./draw.o: /usr/include/c++/6.2.0/tr1/cstdlib
-./draw.o: /usr/include/c++/6.2.0/tr1/cstdlib stickman.h
-./grid.o: /usr/include/c++/6.2.0/tr1/stdio.h
-./grid.o: /usr/include/c++/6.2.0/tr1/cstdio /usr/include/c++/6.2.0/tr1/cstdio
-./grid.o: /usr/include/X11/Xlib.h /usr/include/sys/types.h
-./grid.o: /usr/include/features.h /usr/include/stdc-predef.h
-./grid.o: /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h
-./grid.o: /usr/include/gnu/stubs.h /usr/include/bits/types.h
-./grid.o: /usr/include/bits/typesizes.h /usr/include/linux/time.h
-./grid.o: /usr/include/linux/types.h /usr/include/asm/types.h
-./grid.o: /usr/include/asm-generic/types.h
-./grid.o: /usr/include/asm-generic/int-ll64.h /usr/include/asm/bitsperlong.h
-./grid.o: /usr/include/asm-generic/bitsperlong.h
-./grid.o: /usr/include/linux/posix_types.h /usr/include/linux/stddef.h
-./grid.o: /usr/include/asm/posix_types.h /usr/include/asm/posix_types_64.h
-./grid.o: /usr/include/asm-generic/posix_types.h /usr/include/linux/stddef.h
-./grid.o: /usr/include/endian.h /usr/include/bits/endian.h
-./grid.o: /usr/include/bits/byteswap.h /usr/include/bits/byteswap-16.h
-./grid.o: /usr/include/sys/select.h /usr/include/bits/select.h
-./grid.o: /usr/include/bits/sigset.h /usr/include/bits/time.h
-./grid.o: /usr/include/sys/sysmacros.h /usr/include/bits/pthreadtypes.h
-./grid.o: /usr/include/X11/X.h /usr/include/X11/Xfuncproto.h
-./grid.o: /usr/include/X11/Xosdefs.h /usr/include/X11/Xutil.h
-./grid.o: /usr/include/X11/keysym.h /usr/include/X11/keysymdef.h
-./grid.o: /usr/include/c++/6.2.0/tr1/stdlib.h
-./grid.o: /usr/include/c++/6.2.0/tr1/cstdlib
-./grid.o: /usr/include/c++/6.2.0/tr1/cstdlib
-./stickman.o: /usr/include/c++/6.2.0/tr1/math.h
-./stickman.o: /usr/include/c++/6.2.0/tr1/cmath
-./stickman.o: /usr/include/c++/6.2.0/tr1/cmath
-./stickman.o: /usr/include/c++/6.2.0/bits/stl_algobase.h
-./stickman.o: /usr/include/c++/6.2.0/bits/functexcept.h
-./stickman.o: /usr/include/c++/6.2.0/bits/exception_defines.h
-./stickman.o: /usr/include/c++/6.2.0/bits/cpp_type_traits.h
-./stickman.o: /usr/include/c++/6.2.0/ext/type_traits.h
-./stickman.o: /usr/include/c++/6.2.0/ext/numeric_traits.h
-./stickman.o: /usr/include/c++/6.2.0/bits/stl_pair.h
-./stickman.o: /usr/include/c++/6.2.0/bits/move.h
-./stickman.o: /usr/include/c++/6.2.0/bits/concept_check.h
-./stickman.o: /usr/include/c++/6.2.0/bits/stl_iterator_base_types.h
-./stickman.o: /usr/include/c++/6.2.0/bits/stl_iterator_base_funcs.h
-./stickman.o: /usr/include/c++/6.2.0/debug/assertions.h
-./stickman.o: /usr/include/c++/6.2.0/bits/stl_iterator.h
-./stickman.o: /usr/include/c++/6.2.0/bits/ptr_traits.h
-./stickman.o: /usr/include/c++/6.2.0/debug/debug.h
-./stickman.o: /usr/include/c++/6.2.0/bits/predefined_ops.h
-./stickman.o: /usr/include/c++/6.2.0/limits
-./stickman.o: /usr/include/c++/6.2.0/tr1/type_traits
-./stickman.o: /usr/include/c++/6.2.0/tr1/gamma.tcc
-./stickman.o: /usr/include/c++/6.2.0/tr1/special_function_util.h
-./stickman.o: /usr/include/c++/6.2.0/tr1/bessel_function.tcc
-./stickman.o: /usr/include/c++/6.2.0/tr1/special_function_util.h
-./stickman.o: /usr/include/c++/6.2.0/tr1/beta_function.tcc
-./stickman.o: /usr/include/c++/6.2.0/tr1/ell_integral.tcc
-./stickman.o: /usr/include/c++/6.2.0/tr1/exp_integral.tcc
-./stickman.o: /usr/include/c++/6.2.0/tr1/hypergeometric.tcc
-./stickman.o: /usr/include/c++/6.2.0/tr1/legendre_function.tcc
-./stickman.o: /usr/include/c++/6.2.0/tr1/modified_bessel_func.tcc
-./stickman.o: /usr/include/c++/6.2.0/tr1/poly_hermite.tcc
-./stickman.o: /usr/include/c++/6.2.0/tr1/poly_laguerre.tcc
-./stickman.o: /usr/include/c++/6.2.0/tr1/riemann_zeta.tcc
-./stickman.o: /usr/include/c++/6.2.0/tr1/stdio.h
-./stickman.o: /usr/include/c++/6.2.0/tr1/cstdio
-./stickman.o: /usr/include/c++/6.2.0/tr1/cstdio
-./stickman.o: /usr/include/c++/6.2.0/tr1/stdlib.h
-./stickman.o: /usr/include/c++/6.2.0/tr1/cstdlib
-./stickman.o: /usr/include/c++/6.2.0/tr1/cstdlib /usr/include/X11/Xlib.h
-./stickman.o: /usr/include/sys/types.h /usr/include/features.h
-./stickman.o: /usr/include/stdc-predef.h /usr/include/sys/cdefs.h
-./stickman.o: /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h
-./stickman.o: /usr/include/bits/types.h /usr/include/bits/typesizes.h
-./stickman.o: /usr/include/linux/time.h /usr/include/linux/types.h
-./stickman.o: /usr/include/asm/types.h /usr/include/asm-generic/types.h
-./stickman.o: /usr/include/asm-generic/int-ll64.h
-./stickman.o: /usr/include/asm/bitsperlong.h
-./stickman.o: /usr/include/asm-generic/bitsperlong.h
-./stickman.o: /usr/include/linux/posix_types.h /usr/include/linux/stddef.h
-./stickman.o: /usr/include/asm/posix_types.h
-./stickman.o: /usr/include/asm/posix_types_64.h
-./stickman.o: /usr/include/asm-generic/posix_types.h
-./stickman.o: /usr/include/linux/stddef.h /usr/include/endian.h
-./stickman.o: /usr/include/bits/endian.h /usr/include/bits/byteswap.h
-./stickman.o: /usr/include/bits/byteswap-16.h /usr/include/sys/select.h
-./stickman.o: /usr/include/bits/select.h /usr/include/bits/sigset.h
-./stickman.o: /usr/include/bits/time.h /usr/include/sys/sysmacros.h
-./stickman.o: /usr/include/bits/pthreadtypes.h /usr/include/X11/X.h
-./stickman.o: /usr/include/X11/Xfuncproto.h /usr/include/X11/Xosdefs.h
-./stickman.o: /usr/include/X11/Xutil.h /usr/include/X11/keysym.h
-./stickman.o: /usr/include/X11/keysymdef.h stickman.h
-./xmeltdown.o: /usr/include/X11/Xlib.h /usr/include/sys/types.h
-./xmeltdown.o: /usr/include/features.h /usr/include/stdc-predef.h
-./xmeltdown.o: /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h
-./xmeltdown.o: /usr/include/gnu/stubs.h /usr/include/bits/types.h
-./xmeltdown.o: /usr/include/bits/typesizes.h /usr/include/linux/time.h
-./xmeltdown.o: /usr/include/linux/types.h /usr/include/asm/types.h
-./xmeltdown.o: /usr/include/asm-generic/types.h
-./xmeltdown.o: /usr/include/asm-generic/int-ll64.h
-./xmeltdown.o: /usr/include/asm/bitsperlong.h
-./xmeltdown.o: /usr/include/asm-generic/bitsperlong.h
-./xmeltdown.o: /usr/include/linux/posix_types.h /usr/include/linux/stddef.h
-./xmeltdown.o: /usr/include/asm/posix_types.h
-./xmeltdown.o: /usr/include/asm/posix_types_64.h
-./xmeltdown.o: /usr/include/asm-generic/posix_types.h
-./xmeltdown.o: /usr/include/linux/stddef.h /usr/include/endian.h
-./xmeltdown.o: /usr/include/bits/endian.h /usr/include/bits/byteswap.h
-./xmeltdown.o: /usr/include/bits/byteswap-16.h /usr/include/sys/select.h
-./xmeltdown.o: /usr/include/bits/select.h /usr/include/bits/sigset.h
-./xmeltdown.o: /usr/include/bits/time.h /usr/include/sys/sysmacros.h
-./xmeltdown.o: /usr/include/bits/pthreadtypes.h /usr/include/X11/X.h
-./xmeltdown.o: /usr/include/X11/Xfuncproto.h /usr/include/X11/Xosdefs.h
-./xmeltdown.o: /usr/include/c++/6.2.0/tr1/stdio.h
-./xmeltdown.o: /usr/include/c++/6.2.0/tr1/cstdio
-./xmeltdown.o: /usr/include/c++/6.2.0/tr1/cstdio
-./xmeltdown.o: /usr/include/c++/6.2.0/tr1/stdlib.h
-./xmeltdown.o: /usr/include/c++/6.2.0/tr1/cstdlib
-./xmeltdown.o: /usr/include/c++/6.2.0/tr1/cstdlib /usr/include/linux/unistd.h
-./xmeltdown.o: /usr/include/asm/unistd.h /usr/include/asm/unistd_64.h
-./xmeltdown.o: /usr/include/linux/string.h
-./stickread.o: /usr/include/c++/6.2.0/tr1/math.h
-./stickread.o: /usr/include/c++/6.2.0/tr1/cmath
-./stickread.o: /usr/include/c++/6.2.0/tr1/cmath
-./stickread.o: /usr/include/c++/6.2.0/bits/stl_algobase.h
-./stickread.o: /usr/include/c++/6.2.0/bits/functexcept.h
-./stickread.o: /usr/include/c++/6.2.0/bits/exception_defines.h
-./stickread.o: /usr/include/c++/6.2.0/bits/cpp_type_traits.h
-./stickread.o: /usr/include/c++/6.2.0/ext/type_traits.h
-./stickread.o: /usr/include/c++/6.2.0/ext/numeric_traits.h
-./stickread.o: /usr/include/c++/6.2.0/bits/stl_pair.h
-./stickread.o: /usr/include/c++/6.2.0/bits/move.h
-./stickread.o: /usr/include/c++/6.2.0/bits/concept_check.h
-./stickread.o: /usr/include/c++/6.2.0/bits/stl_iterator_base_types.h
-./stickread.o: /usr/include/c++/6.2.0/bits/stl_iterator_base_funcs.h
-./stickread.o: /usr/include/c++/6.2.0/debug/assertions.h
-./stickread.o: /usr/include/c++/6.2.0/bits/stl_iterator.h
-./stickread.o: /usr/include/c++/6.2.0/bits/ptr_traits.h
-./stickread.o: /usr/include/c++/6.2.0/debug/debug.h
-./stickread.o: /usr/include/c++/6.2.0/bits/predefined_ops.h
-./stickread.o: /usr/include/c++/6.2.0/limits
-./stickread.o: /usr/include/c++/6.2.0/tr1/type_traits
-./stickread.o: /usr/include/c++/6.2.0/tr1/gamma.tcc
-./stickread.o: /usr/include/c++/6.2.0/tr1/special_function_util.h
-./stickread.o: /usr/include/c++/6.2.0/tr1/bessel_function.tcc
-./stickread.o: /usr/include/c++/6.2.0/tr1/special_function_util.h
-./stickread.o: /usr/include/c++/6.2.0/tr1/beta_function.tcc
-./stickread.o: /usr/include/c++/6.2.0/tr1/ell_integral.tcc
-./stickread.o: /usr/include/c++/6.2.0/tr1/exp_integral.tcc
-./stickread.o: /usr/include/c++/6.2.0/tr1/hypergeometric.tcc
-./stickread.o: /usr/include/c++/6.2.0/tr1/legendre_function.tcc
-./stickread.o: /usr/include/c++/6.2.0/tr1/modified_bessel_func.tcc
-./stickread.o: /usr/include/c++/6.2.0/tr1/poly_hermite.tcc
-./stickread.o: /usr/include/c++/6.2.0/tr1/poly_laguerre.tcc
-./stickread.o: /usr/include/c++/6.2.0/tr1/riemann_zeta.tcc
-./stickread.o: /usr/include/c++/6.2.0/tr1/stdio.h
-./stickread.o: /usr/include/c++/6.2.0/tr1/cstdio
-./stickread.o: /usr/include/c++/6.2.0/tr1/cstdio /usr/include/X11/Xlib.h
-./stickread.o: /usr/include/sys/types.h /usr/include/features.h
-./stickread.o: /usr/include/stdc-predef.h /usr/include/sys/cdefs.h
-./stickread.o: /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h
-./stickread.o: /usr/include/bits/types.h /usr/include/bits/typesizes.h
-./stickread.o: /usr/include/linux/time.h /usr/include/linux/types.h
-./stickread.o: /usr/include/asm/types.h /usr/include/asm-generic/types.h
-./stickread.o: /usr/include/asm-generic/int-ll64.h
-./stickread.o: /usr/include/asm/bitsperlong.h
-./stickread.o: /usr/include/asm-generic/bitsperlong.h
-./stickread.o: /usr/include/linux/posix_types.h /usr/include/linux/stddef.h
-./stickread.o: /usr/include/asm/posix_types.h
-./stickread.o: /usr/include/asm/posix_types_64.h
-./stickread.o: /usr/include/asm-generic/posix_types.h
-./stickread.o: /usr/include/linux/stddef.h /usr/include/endian.h
-./stickread.o: /usr/include/bits/endian.h /usr/include/bits/byteswap.h
-./stickread.o: /usr/include/bits/byteswap-16.h /usr/include/sys/select.h
-./stickread.o: /usr/include/bits/select.h /usr/include/bits/sigset.h
-./stickread.o: /usr/include/bits/time.h /usr/include/sys/sysmacros.h
-./stickread.o: /usr/include/bits/pthreadtypes.h /usr/include/X11/X.h
-./stickread.o: /usr/include/X11/Xfuncproto.h /usr/include/X11/Xosdefs.h
-./stickread.o: /usr/include/X11/Xutil.h /usr/include/X11/keysym.h
-./stickread.o: /usr/include/X11/keysymdef.h
-./stickread.o: /usr/include/c++/6.2.0/tr1/stdlib.h
-./stickread.o: /usr/include/c++/6.2.0/tr1/cstdlib
-./stickread.o: /usr/include/c++/6.2.0/tr1/cstdlib stickman.h
-./dance.o: /usr/include/c++/6.2.0/tr1/math.h /usr/include/c++/6.2.0/tr1/cmath
-./dance.o: /usr/include/c++/6.2.0/tr1/cmath
-./dance.o: /usr/include/c++/6.2.0/bits/stl_algobase.h
-./dance.o: /usr/include/c++/6.2.0/bits/functexcept.h
-./dance.o: /usr/include/c++/6.2.0/bits/exception_defines.h
-./dance.o: /usr/include/c++/6.2.0/bits/cpp_type_traits.h
-./dance.o: /usr/include/c++/6.2.0/ext/type_traits.h
-./dance.o: /usr/include/c++/6.2.0/ext/numeric_traits.h
-./dance.o: /usr/include/c++/6.2.0/bits/stl_pair.h
-./dance.o: /usr/include/c++/6.2.0/bits/move.h
-./dance.o: /usr/include/c++/6.2.0/bits/concept_check.h
-./dance.o: /usr/include/c++/6.2.0/bits/stl_iterator_base_types.h
-./dance.o: /usr/include/c++/6.2.0/bits/stl_iterator_base_funcs.h
-./dance.o: /usr/include/c++/6.2.0/debug/assertions.h
-./dance.o: /usr/include/c++/6.2.0/bits/stl_iterator.h
-./dance.o: /usr/include/c++/6.2.0/bits/ptr_traits.h
-./dance.o: /usr/include/c++/6.2.0/debug/debug.h
-./dance.o: /usr/include/c++/6.2.0/bits/predefined_ops.h
-./dance.o: /usr/include/c++/6.2.0/limits
-./dance.o: /usr/include/c++/6.2.0/tr1/type_traits
-./dance.o: /usr/include/c++/6.2.0/tr1/gamma.tcc
-./dance.o: /usr/include/c++/6.2.0/tr1/special_function_util.h
-./dance.o: /usr/include/c++/6.2.0/tr1/bessel_function.tcc
-./dance.o: /usr/include/c++/6.2.0/tr1/special_function_util.h
-./dance.o: /usr/include/c++/6.2.0/tr1/beta_function.tcc
-./dance.o: /usr/include/c++/6.2.0/tr1/ell_integral.tcc
-./dance.o: /usr/include/c++/6.2.0/tr1/exp_integral.tcc
-./dance.o: /usr/include/c++/6.2.0/tr1/hypergeometric.tcc
-./dance.o: /usr/include/c++/6.2.0/tr1/legendre_function.tcc
-./dance.o: /usr/include/c++/6.2.0/tr1/modified_bessel_func.tcc
-./dance.o: /usr/include/c++/6.2.0/tr1/poly_hermite.tcc
-./dance.o: /usr/include/c++/6.2.0/tr1/poly_laguerre.tcc
-./dance.o: /usr/include/c++/6.2.0/tr1/riemann_zeta.tcc
-./dance.o: /usr/include/c++/6.2.0/tr1/stdio.h
-./dance.o: /usr/include/c++/6.2.0/tr1/cstdio
-./dance.o: /usr/include/c++/6.2.0/tr1/cstdio
-./dance.o: /usr/include/c++/6.2.0/tr1/stdlib.h
-./dance.o: /usr/include/c++/6.2.0/tr1/cstdlib
-./dance.o: /usr/include/c++/6.2.0/tr1/cstdlib /usr/include/X11/Xlib.h
-./dance.o: /usr/include/sys/types.h /usr/include/features.h
-./dance.o: /usr/include/stdc-predef.h /usr/include/sys/cdefs.h
-./dance.o: /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h
-./dance.o: /usr/include/bits/types.h /usr/include/bits/typesizes.h
-./dance.o: /usr/include/linux/time.h /usr/include/linux/types.h
-./dance.o: /usr/include/asm/types.h /usr/include/asm-generic/types.h
-./dance.o: /usr/include/asm-generic/int-ll64.h /usr/include/asm/bitsperlong.h
-./dance.o: /usr/include/asm-generic/bitsperlong.h
-./dance.o: /usr/include/linux/posix_types.h /usr/include/linux/stddef.h
-./dance.o: /usr/include/asm/posix_types.h /usr/include/asm/posix_types_64.h
-./dance.o: /usr/include/asm-generic/posix_types.h /usr/include/linux/stddef.h
-./dance.o: /usr/include/endian.h /usr/include/bits/endian.h
-./dance.o: /usr/include/bits/byteswap.h /usr/include/bits/byteswap-16.h
-./dance.o: /usr/include/sys/select.h /usr/include/bits/select.h
-./dance.o: /usr/include/bits/sigset.h /usr/include/bits/time.h
-./dance.o: /usr/include/sys/sysmacros.h /usr/include/bits/pthreadtypes.h
-./dance.o: /usr/include/X11/X.h /usr/include/X11/Xfuncproto.h
-./dance.o: /usr/include/X11/Xosdefs.h /usr/include/X11/Xutil.h
-./dance.o: /usr/include/X11/keysym.h /usr/include/X11/keysymdef.h
-./dance.o: /usr/include/sys/time.h stickman.h
+./src/draw.o: /usr/include/c++/6.2.0/tr1/math.h
+./src/draw.o: /usr/include/c++/6.2.0/tr1/cmath
+./src/draw.o: /usr/include/c++/6.2.0/tr1/cmath
+./src/draw.o: /usr/include/c++/6.2.0/bits/stl_algobase.h
+./src/draw.o: /usr/include/c++/6.2.0/bits/functexcept.h
+./src/draw.o: /usr/include/c++/6.2.0/bits/exception_defines.h
+./src/draw.o: /usr/include/c++/6.2.0/bits/cpp_type_traits.h
+./src/draw.o: /usr/include/c++/6.2.0/ext/type_traits.h
+./src/draw.o: /usr/include/c++/6.2.0/ext/numeric_traits.h
+./src/draw.o: /usr/include/c++/6.2.0/bits/stl_pair.h
+./src/draw.o: /usr/include/c++/6.2.0/bits/move.h
+./src/draw.o: /usr/include/c++/6.2.0/bits/concept_check.h
+./src/draw.o: /usr/include/c++/6.2.0/bits/stl_iterator_base_types.h
+./src/draw.o: /usr/include/c++/6.2.0/bits/stl_iterator_base_funcs.h
+./src/draw.o: /usr/include/c++/6.2.0/debug/assertions.h
+./src/draw.o: /usr/include/c++/6.2.0/bits/stl_iterator.h
+./src/draw.o: /usr/include/c++/6.2.0/bits/ptr_traits.h
+./src/draw.o: /usr/include/c++/6.2.0/debug/debug.h
+./src/draw.o: /usr/include/c++/6.2.0/bits/predefined_ops.h
+./src/draw.o: /usr/include/c++/6.2.0/limits
+./src/draw.o: /usr/include/c++/6.2.0/tr1/type_traits
+./src/draw.o: /usr/include/c++/6.2.0/tr1/gamma.tcc
+./src/draw.o: /usr/include/c++/6.2.0/tr1/special_function_util.h
+./src/draw.o: /usr/include/c++/6.2.0/tr1/bessel_function.tcc
+./src/draw.o: /usr/include/c++/6.2.0/tr1/special_function_util.h
+./src/draw.o: /usr/include/c++/6.2.0/tr1/beta_function.tcc
+./src/draw.o: /usr/include/c++/6.2.0/tr1/ell_integral.tcc
+./src/draw.o: /usr/include/c++/6.2.0/tr1/exp_integral.tcc
+./src/draw.o: /usr/include/c++/6.2.0/tr1/hypergeometric.tcc
+./src/draw.o: /usr/include/c++/6.2.0/tr1/legendre_function.tcc
+./src/draw.o: /usr/include/c++/6.2.0/tr1/modified_bessel_func.tcc
+./src/draw.o: /usr/include/c++/6.2.0/tr1/poly_hermite.tcc
+./src/draw.o: /usr/include/c++/6.2.0/tr1/poly_laguerre.tcc
+./src/draw.o: /usr/include/c++/6.2.0/tr1/riemann_zeta.tcc
+./src/draw.o: /usr/include/c++/6.2.0/tr1/stdio.h
+./src/draw.o: /usr/include/c++/6.2.0/tr1/cstdio
+./src/draw.o: /usr/include/c++/6.2.0/tr1/cstdio /usr/include/X11/Xlib.h
+./src/draw.o: /usr/include/sys/types.h /usr/include/features.h
+./src/draw.o: /usr/include/stdc-predef.h /usr/include/sys/cdefs.h
+./src/draw.o: /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h
+./src/draw.o: /usr/include/bits/types.h /usr/include/bits/typesizes.h
+./src/draw.o: /usr/include/linux/time.h /usr/include/linux/types.h
+./src/draw.o: /usr/include/asm/types.h /usr/include/asm-generic/types.h
+./src/draw.o: /usr/include/asm-generic/int-ll64.h
+./src/draw.o: /usr/include/asm/bitsperlong.h
+./src/draw.o: /usr/include/asm-generic/bitsperlong.h
+./src/draw.o: /usr/include/linux/posix_types.h /usr/include/linux/stddef.h
+./src/draw.o: /usr/include/asm/posix_types.h
+./src/draw.o: /usr/include/asm/posix_types_64.h
+./src/draw.o: /usr/include/asm-generic/posix_types.h
+./src/draw.o: /usr/include/linux/stddef.h /usr/include/endian.h
+./src/draw.o: /usr/include/bits/endian.h /usr/include/bits/byteswap.h
+./src/draw.o: /usr/include/bits/byteswap-16.h /usr/include/sys/select.h
+./src/draw.o: /usr/include/bits/select.h /usr/include/bits/sigset.h
+./src/draw.o: /usr/include/bits/time.h /usr/include/sys/sysmacros.h
+./src/draw.o: /usr/include/bits/pthreadtypes.h /usr/include/X11/X.h
+./src/draw.o: /usr/include/X11/Xfuncproto.h /usr/include/X11/Xosdefs.h
+./src/draw.o: /usr/include/X11/Xutil.h /usr/include/X11/keysym.h
+./src/draw.o: /usr/include/X11/keysymdef.h
+./src/draw.o: /usr/include/c++/6.2.0/tr1/stdlib.h
+./src/draw.o: /usr/include/c++/6.2.0/tr1/cstdlib
+./src/draw.o: /usr/include/c++/6.2.0/tr1/cstdlib ./src/stickman.h
+./src/grid.o: /usr/include/c++/6.2.0/tr1/stdio.h
+./src/grid.o: /usr/include/c++/6.2.0/tr1/cstdio
+./src/grid.o: /usr/include/c++/6.2.0/tr1/cstdio /usr/include/X11/Xlib.h
+./src/grid.o: /usr/include/sys/types.h /usr/include/features.h
+./src/grid.o: /usr/include/stdc-predef.h /usr/include/sys/cdefs.h
+./src/grid.o: /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h
+./src/grid.o: /usr/include/bits/types.h /usr/include/bits/typesizes.h
+./src/grid.o: /usr/include/linux/time.h /usr/include/linux/types.h
+./src/grid.o: /usr/include/asm/types.h /usr/include/asm-generic/types.h
+./src/grid.o: /usr/include/asm-generic/int-ll64.h
+./src/grid.o: /usr/include/asm/bitsperlong.h
+./src/grid.o: /usr/include/asm-generic/bitsperlong.h
+./src/grid.o: /usr/include/linux/posix_types.h /usr/include/linux/stddef.h
+./src/grid.o: /usr/include/asm/posix_types.h
+./src/grid.o: /usr/include/asm/posix_types_64.h
+./src/grid.o: /usr/include/asm-generic/posix_types.h
+./src/grid.o: /usr/include/linux/stddef.h /usr/include/endian.h
+./src/grid.o: /usr/include/bits/endian.h /usr/include/bits/byteswap.h
+./src/grid.o: /usr/include/bits/byteswap-16.h /usr/include/sys/select.h
+./src/grid.o: /usr/include/bits/select.h /usr/include/bits/sigset.h
+./src/grid.o: /usr/include/bits/time.h /usr/include/sys/sysmacros.h
+./src/grid.o: /usr/include/bits/pthreadtypes.h /usr/include/X11/X.h
+./src/grid.o: /usr/include/X11/Xfuncproto.h /usr/include/X11/Xosdefs.h
+./src/grid.o: /usr/include/X11/Xutil.h /usr/include/X11/keysym.h
+./src/grid.o: /usr/include/X11/keysymdef.h
+./src/grid.o: /usr/include/c++/6.2.0/tr1/stdlib.h
+./src/grid.o: /usr/include/c++/6.2.0/tr1/cstdlib
+./src/grid.o: /usr/include/c++/6.2.0/tr1/cstdlib
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/math.h
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/cmath
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/cmath
+./src/stickman.o: /usr/include/c++/6.2.0/bits/stl_algobase.h
+./src/stickman.o: /usr/include/c++/6.2.0/bits/functexcept.h
+./src/stickman.o: /usr/include/c++/6.2.0/bits/exception_defines.h
+./src/stickman.o: /usr/include/c++/6.2.0/bits/cpp_type_traits.h
+./src/stickman.o: /usr/include/c++/6.2.0/ext/type_traits.h
+./src/stickman.o: /usr/include/c++/6.2.0/ext/numeric_traits.h
+./src/stickman.o: /usr/include/c++/6.2.0/bits/stl_pair.h
+./src/stickman.o: /usr/include/c++/6.2.0/bits/move.h
+./src/stickman.o: /usr/include/c++/6.2.0/bits/concept_check.h
+./src/stickman.o: /usr/include/c++/6.2.0/bits/stl_iterator_base_types.h
+./src/stickman.o: /usr/include/c++/6.2.0/bits/stl_iterator_base_funcs.h
+./src/stickman.o: /usr/include/c++/6.2.0/debug/assertions.h
+./src/stickman.o: /usr/include/c++/6.2.0/bits/stl_iterator.h
+./src/stickman.o: /usr/include/c++/6.2.0/bits/ptr_traits.h
+./src/stickman.o: /usr/include/c++/6.2.0/debug/debug.h
+./src/stickman.o: /usr/include/c++/6.2.0/bits/predefined_ops.h
+./src/stickman.o: /usr/include/c++/6.2.0/limits
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/type_traits
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/gamma.tcc
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/special_function_util.h
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/bessel_function.tcc
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/special_function_util.h
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/beta_function.tcc
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/ell_integral.tcc
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/exp_integral.tcc
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/hypergeometric.tcc
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/legendre_function.tcc
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/modified_bessel_func.tcc
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/poly_hermite.tcc
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/poly_laguerre.tcc
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/riemann_zeta.tcc
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/stdio.h
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/cstdio
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/cstdio
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/stdlib.h
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/cstdlib
+./src/stickman.o: /usr/include/c++/6.2.0/tr1/cstdlib /usr/include/X11/Xlib.h
+./src/stickman.o: /usr/include/sys/types.h /usr/include/features.h
+./src/stickman.o: /usr/include/stdc-predef.h /usr/include/sys/cdefs.h
+./src/stickman.o: /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h
+./src/stickman.o: /usr/include/bits/types.h /usr/include/bits/typesizes.h
+./src/stickman.o: /usr/include/linux/time.h /usr/include/linux/types.h
+./src/stickman.o: /usr/include/asm/types.h /usr/include/asm-generic/types.h
+./src/stickman.o: /usr/include/asm-generic/int-ll64.h
+./src/stickman.o: /usr/include/asm/bitsperlong.h
+./src/stickman.o: /usr/include/asm-generic/bitsperlong.h
+./src/stickman.o: /usr/include/linux/posix_types.h
+./src/stickman.o: /usr/include/linux/stddef.h /usr/include/asm/posix_types.h
+./src/stickman.o: /usr/include/asm/posix_types_64.h
+./src/stickman.o: /usr/include/asm-generic/posix_types.h
+./src/stickman.o: /usr/include/linux/stddef.h /usr/include/endian.h
+./src/stickman.o: /usr/include/bits/endian.h /usr/include/bits/byteswap.h
+./src/stickman.o: /usr/include/bits/byteswap-16.h /usr/include/sys/select.h
+./src/stickman.o: /usr/include/bits/select.h /usr/include/bits/sigset.h
+./src/stickman.o: /usr/include/bits/time.h /usr/include/sys/sysmacros.h
+./src/stickman.o: /usr/include/bits/pthreadtypes.h /usr/include/X11/X.h
+./src/stickman.o: /usr/include/X11/Xfuncproto.h /usr/include/X11/Xosdefs.h
+./src/stickman.o: /usr/include/X11/Xutil.h /usr/include/X11/keysym.h
+./src/stickman.o: /usr/include/X11/keysymdef.h ./src/stickman.h
+./src/xmeltdown.o: /usr/include/X11/Xlib.h /usr/include/sys/types.h
+./src/xmeltdown.o: /usr/include/features.h /usr/include/stdc-predef.h
+./src/xmeltdown.o: /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h
+./src/xmeltdown.o: /usr/include/gnu/stubs.h /usr/include/bits/types.h
+./src/xmeltdown.o: /usr/include/bits/typesizes.h /usr/include/linux/time.h
+./src/xmeltdown.o: /usr/include/linux/types.h /usr/include/asm/types.h
+./src/xmeltdown.o: /usr/include/asm-generic/types.h
+./src/xmeltdown.o: /usr/include/asm-generic/int-ll64.h
+./src/xmeltdown.o: /usr/include/asm/bitsperlong.h
+./src/xmeltdown.o: /usr/include/asm-generic/bitsperlong.h
+./src/xmeltdown.o: /usr/include/linux/posix_types.h
+./src/xmeltdown.o: /usr/include/linux/stddef.h /usr/include/asm/posix_types.h
+./src/xmeltdown.o: /usr/include/asm/posix_types_64.h
+./src/xmeltdown.o: /usr/include/asm-generic/posix_types.h
+./src/xmeltdown.o: /usr/include/linux/stddef.h /usr/include/endian.h
+./src/xmeltdown.o: /usr/include/bits/endian.h /usr/include/bits/byteswap.h
+./src/xmeltdown.o: /usr/include/bits/byteswap-16.h /usr/include/sys/select.h
+./src/xmeltdown.o: /usr/include/bits/select.h /usr/include/bits/sigset.h
+./src/xmeltdown.o: /usr/include/bits/time.h /usr/include/sys/sysmacros.h
+./src/xmeltdown.o: /usr/include/bits/pthreadtypes.h /usr/include/X11/X.h
+./src/xmeltdown.o: /usr/include/X11/Xfuncproto.h /usr/include/X11/Xosdefs.h
+./src/xmeltdown.o: /usr/include/c++/6.2.0/tr1/stdio.h
+./src/xmeltdown.o: /usr/include/c++/6.2.0/tr1/cstdio
+./src/xmeltdown.o: /usr/include/c++/6.2.0/tr1/cstdio
+./src/xmeltdown.o: /usr/include/c++/6.2.0/tr1/stdlib.h
+./src/xmeltdown.o: /usr/include/c++/6.2.0/tr1/cstdlib
+./src/xmeltdown.o: /usr/include/c++/6.2.0/tr1/cstdlib
+./src/xmeltdown.o: /usr/include/linux/unistd.h /usr/include/asm/unistd.h
+./src/xmeltdown.o: /usr/include/asm/unistd_64.h /usr/include/linux/string.h
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/math.h
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/cmath
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/cmath
+./src/stickread.o: /usr/include/c++/6.2.0/bits/stl_algobase.h
+./src/stickread.o: /usr/include/c++/6.2.0/bits/functexcept.h
+./src/stickread.o: /usr/include/c++/6.2.0/bits/exception_defines.h
+./src/stickread.o: /usr/include/c++/6.2.0/bits/cpp_type_traits.h
+./src/stickread.o: /usr/include/c++/6.2.0/ext/type_traits.h
+./src/stickread.o: /usr/include/c++/6.2.0/ext/numeric_traits.h
+./src/stickread.o: /usr/include/c++/6.2.0/bits/stl_pair.h
+./src/stickread.o: /usr/include/c++/6.2.0/bits/move.h
+./src/stickread.o: /usr/include/c++/6.2.0/bits/concept_check.h
+./src/stickread.o: /usr/include/c++/6.2.0/bits/stl_iterator_base_types.h
+./src/stickread.o: /usr/include/c++/6.2.0/bits/stl_iterator_base_funcs.h
+./src/stickread.o: /usr/include/c++/6.2.0/debug/assertions.h
+./src/stickread.o: /usr/include/c++/6.2.0/bits/stl_iterator.h
+./src/stickread.o: /usr/include/c++/6.2.0/bits/ptr_traits.h
+./src/stickread.o: /usr/include/c++/6.2.0/debug/debug.h
+./src/stickread.o: /usr/include/c++/6.2.0/bits/predefined_ops.h
+./src/stickread.o: /usr/include/c++/6.2.0/limits
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/type_traits
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/gamma.tcc
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/special_function_util.h
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/bessel_function.tcc
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/special_function_util.h
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/beta_function.tcc
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/ell_integral.tcc
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/exp_integral.tcc
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/hypergeometric.tcc
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/legendre_function.tcc
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/modified_bessel_func.tcc
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/poly_hermite.tcc
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/poly_laguerre.tcc
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/riemann_zeta.tcc
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/stdio.h
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/cstdio
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/cstdio /usr/include/X11/Xlib.h
+./src/stickread.o: /usr/include/sys/types.h /usr/include/features.h
+./src/stickread.o: /usr/include/stdc-predef.h /usr/include/sys/cdefs.h
+./src/stickread.o: /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h
+./src/stickread.o: /usr/include/bits/types.h /usr/include/bits/typesizes.h
+./src/stickread.o: /usr/include/linux/time.h /usr/include/linux/types.h
+./src/stickread.o: /usr/include/asm/types.h /usr/include/asm-generic/types.h
+./src/stickread.o: /usr/include/asm-generic/int-ll64.h
+./src/stickread.o: /usr/include/asm/bitsperlong.h
+./src/stickread.o: /usr/include/asm-generic/bitsperlong.h
+./src/stickread.o: /usr/include/linux/posix_types.h
+./src/stickread.o: /usr/include/linux/stddef.h /usr/include/asm/posix_types.h
+./src/stickread.o: /usr/include/asm/posix_types_64.h
+./src/stickread.o: /usr/include/asm-generic/posix_types.h
+./src/stickread.o: /usr/include/linux/stddef.h /usr/include/endian.h
+./src/stickread.o: /usr/include/bits/endian.h /usr/include/bits/byteswap.h
+./src/stickread.o: /usr/include/bits/byteswap-16.h /usr/include/sys/select.h
+./src/stickread.o: /usr/include/bits/select.h /usr/include/bits/sigset.h
+./src/stickread.o: /usr/include/bits/time.h /usr/include/sys/sysmacros.h
+./src/stickread.o: /usr/include/bits/pthreadtypes.h /usr/include/X11/X.h
+./src/stickread.o: /usr/include/X11/Xfuncproto.h /usr/include/X11/Xosdefs.h
+./src/stickread.o: /usr/include/X11/Xutil.h /usr/include/X11/keysym.h
+./src/stickread.o: /usr/include/X11/keysymdef.h
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/stdlib.h
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/cstdlib
+./src/stickread.o: /usr/include/c++/6.2.0/tr1/cstdlib ./src/stickman.h
+./src/dance.o: /usr/include/c++/6.2.0/tr1/math.h
+./src/dance.o: /usr/include/c++/6.2.0/tr1/cmath
+./src/dance.o: /usr/include/c++/6.2.0/tr1/cmath
+./src/dance.o: /usr/include/c++/6.2.0/bits/stl_algobase.h
+./src/dance.o: /usr/include/c++/6.2.0/bits/functexcept.h
+./src/dance.o: /usr/include/c++/6.2.0/bits/exception_defines.h
+./src/dance.o: /usr/include/c++/6.2.0/bits/cpp_type_traits.h
+./src/dance.o: /usr/include/c++/6.2.0/ext/type_traits.h
+./src/dance.o: /usr/include/c++/6.2.0/ext/numeric_traits.h
+./src/dance.o: /usr/include/c++/6.2.0/bits/stl_pair.h
+./src/dance.o: /usr/include/c++/6.2.0/bits/move.h
+./src/dance.o: /usr/include/c++/6.2.0/bits/concept_check.h
+./src/dance.o: /usr/include/c++/6.2.0/bits/stl_iterator_base_types.h
+./src/dance.o: /usr/include/c++/6.2.0/bits/stl_iterator_base_funcs.h
+./src/dance.o: /usr/include/c++/6.2.0/debug/assertions.h
+./src/dance.o: /usr/include/c++/6.2.0/bits/stl_iterator.h
+./src/dance.o: /usr/include/c++/6.2.0/bits/ptr_traits.h
+./src/dance.o: /usr/include/c++/6.2.0/debug/debug.h
+./src/dance.o: /usr/include/c++/6.2.0/bits/predefined_ops.h
+./src/dance.o: /usr/include/c++/6.2.0/limits
+./src/dance.o: /usr/include/c++/6.2.0/tr1/type_traits
+./src/dance.o: /usr/include/c++/6.2.0/tr1/gamma.tcc
+./src/dance.o: /usr/include/c++/6.2.0/tr1/special_function_util.h
+./src/dance.o: /usr/include/c++/6.2.0/tr1/bessel_function.tcc
+./src/dance.o: /usr/include/c++/6.2.0/tr1/special_function_util.h
+./src/dance.o: /usr/include/c++/6.2.0/tr1/beta_function.tcc
+./src/dance.o: /usr/include/c++/6.2.0/tr1/ell_integral.tcc
+./src/dance.o: /usr/include/c++/6.2.0/tr1/exp_integral.tcc
+./src/dance.o: /usr/include/c++/6.2.0/tr1/hypergeometric.tcc
+./src/dance.o: /usr/include/c++/6.2.0/tr1/legendre_function.tcc
+./src/dance.o: /usr/include/c++/6.2.0/tr1/modified_bessel_func.tcc
+./src/dance.o: /usr/include/c++/6.2.0/tr1/poly_hermite.tcc
+./src/dance.o: /usr/include/c++/6.2.0/tr1/poly_laguerre.tcc
+./src/dance.o: /usr/include/c++/6.2.0/tr1/riemann_zeta.tcc
+./src/dance.o: /usr/include/c++/6.2.0/tr1/stdio.h
+./src/dance.o: /usr/include/c++/6.2.0/tr1/cstdio
+./src/dance.o: /usr/include/c++/6.2.0/tr1/cstdio
+./src/dance.o: /usr/include/c++/6.2.0/tr1/stdlib.h
+./src/dance.o: /usr/include/c++/6.2.0/tr1/cstdlib
+./src/dance.o: /usr/include/c++/6.2.0/tr1/cstdlib /usr/include/X11/Xlib.h
+./src/dance.o: /usr/include/sys/types.h /usr/include/features.h
+./src/dance.o: /usr/include/stdc-predef.h /usr/include/sys/cdefs.h
+./src/dance.o: /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h
+./src/dance.o: /usr/include/bits/types.h /usr/include/bits/typesizes.h
+./src/dance.o: /usr/include/linux/time.h /usr/include/linux/types.h
+./src/dance.o: /usr/include/asm/types.h /usr/include/asm-generic/types.h
+./src/dance.o: /usr/include/asm-generic/int-ll64.h
+./src/dance.o: /usr/include/asm/bitsperlong.h
+./src/dance.o: /usr/include/asm-generic/bitsperlong.h
+./src/dance.o: /usr/include/linux/posix_types.h /usr/include/linux/stddef.h
+./src/dance.o: /usr/include/asm/posix_types.h
+./src/dance.o: /usr/include/asm/posix_types_64.h
+./src/dance.o: /usr/include/asm-generic/posix_types.h
+./src/dance.o: /usr/include/linux/stddef.h /usr/include/endian.h
+./src/dance.o: /usr/include/bits/endian.h /usr/include/bits/byteswap.h
+./src/dance.o: /usr/include/bits/byteswap-16.h /usr/include/sys/select.h
+./src/dance.o: /usr/include/bits/select.h /usr/include/bits/sigset.h
+./src/dance.o: /usr/include/bits/time.h /usr/include/sys/sysmacros.h
+./src/dance.o: /usr/include/bits/pthreadtypes.h /usr/include/X11/X.h
+./src/dance.o: /usr/include/X11/Xfuncproto.h /usr/include/X11/Xosdefs.h
+./src/dance.o: /usr/include/X11/Xutil.h /usr/include/X11/keysym.h
+./src/dance.o: /usr/include/X11/keysymdef.h /usr/include/sys/time.h
+./src/dance.o: ./src/stickman.h
