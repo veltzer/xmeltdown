@@ -6,4 +6,9 @@ Makefile.bak
 bin
 # tools
 /tools
+/tools.stamp
 /obj
+# python related
+__pycache__
+*.pyo
+*.pyc

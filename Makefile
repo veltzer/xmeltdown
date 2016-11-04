@@ -23,7 +23,7 @@ GCCVER_SHORT:=$(shell echo $(GCCVER)| cut -b 1-3)
 #########################
 SRC:=$(shell find . -name "*.c")
 OBJ:=$(addprefix obj/,$(notdir $(addsuffix .o,$(basename $(SRC)))))
-ALL:=$(BIN_FOLDER)/stickman $(BIN_FOLDER)/stickread $(BIN_FOLDER)/dance $(BIN_FOLDER)/xmeltdown $(BIN_FOLDER)/grid
+ALL:=tools.stamp $(BIN_FOLDER)/stickman $(BIN_FOLDER)/stickread $(BIN_FOLDER)/dance $(BIN_FOLDER)/xmeltdown $(BIN_FOLDER)/grid
 
 # dependency on the makefile itself
 ifeq ($(DO_ALLDEP),1)
@@ -47,6 +47,11 @@ endif # DO_MKDBG
 .PHONY: all
 all: $(ALL) $(ALL_DEP)
 	@true
+
+tools.stamp: templardefs/deps.py
+	$(info doing [$@])
+	@templar_cmd install_deps
+	@make_helper touch-mkdir $@
 
 .PHONY: clean
 clean: $(ALL_DEP)
