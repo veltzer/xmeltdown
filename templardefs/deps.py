@@ -3,7 +3,8 @@ dependencies for this project
 '''
 
 def populate(d):
-    d.packs=[
+    # ubuntu packages for development
+    d.packs_dev=[
         #for makedepend(1)
         'xutils-dev',
         #for the X11 API
