@@ -50,7 +50,7 @@ all: $(ALL) $(ALL_DEP)
 
 tools.stamp: templardefs/deps.py
 	$(info doing [$@])
-	@templar_cmd install_deps
+	@templar install_deps
 	@make_helper touch-mkdir $@
 
 .PHONY: clean
