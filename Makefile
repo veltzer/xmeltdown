@@ -1,6 +1,8 @@
 ##############
 # Parameters #
 ##############
+# do you want to install the needed tools?
+DO_TOOLS:=0
 # do you want to debug the makefile ?
 DO_MKDBG:=0
 # do you want dependency on the Makefile itself ?
@@ -21,16 +23,22 @@ GCCVER_SHORT:=$(shell echo $(GCCVER)| cut -b 1-3)
 #########################
 # Processing parameters #
 #########################
-SRC:=$(shell find . -name "*.c")
-OBJ:=$(addprefix obj/,$(notdir $(addsuffix .o,$(basename $(SRC)))))
-ALL:=tools.stamp $(BIN_FOLDER)/stickman $(BIN_FOLDER)/stickread $(BIN_FOLDER)/dance $(BIN_FOLDER)/xmeltdown $(BIN_FOLDER)/grid
+ALL=
+ALL_DEP=
+
+# dependency on tools.stamp
+ifeq ($(DO_TOOLS),1)
+ALL+=tools.stamp
+endif
 
 # dependency on the makefile itself
 ifeq ($(DO_ALLDEP),1)
-ALL_DEP:=Makefile
-else
-ALL_DEP:=
+ALL_DEP+=Makefile
 endif
+
+SRC:=$(shell find . -name "*.c")
+OBJ:=$(addprefix obj/,$(notdir $(addsuffix .o,$(basename $(SRC)))))
+ALL+=$(BIN_FOLDER)/stickman $(BIN_FOLDER)/stickread $(BIN_FOLDER)/dance $(BIN_FOLDER)/xmeltdown $(BIN_FOLDER)/grid
 
 # silent stuff
 ifeq ($(DO_MKDBG),1)
@@ -48,7 +56,7 @@ endif # DO_MKDBG
 all: $(ALL) $(ALL_DEP)
 	@true
 
-tools.stamp: templardefs/deps.py
+tools.stamp: config/deps.py
 	$(info doing [$@])
 	@templar install_deps
 	@make_helper touch-mkdir $@
