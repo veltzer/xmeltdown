@@ -69,7 +69,7 @@ clean: $(ALL_DEP)
 .PHONY: clean_git
 clean_git: $(ALL_DEP)
 	$(info doing [$@])
-	$(Q)git clean -xdf > /dev/null
+	$(Q)git clean -qffxd
 
 OBJ_GRID:=obj/grid.o
 $(BIN_FOLDER)/grid: $(OBJ_GRID) $(ALL_DEP)
