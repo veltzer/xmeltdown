@@ -58,7 +58,6 @@ all: $(ALL) $(ALL_DEP)
 
 tools.stamp: config/deps.py
 	$(info doing [$@])
-	@templar install_deps
 	@pymakehelper touch_mkdir $@
 
 .PHONY: clean
