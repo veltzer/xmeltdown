@@ -24,7 +24,6 @@ GCCVER_SHORT:=$(shell echo $(GCCVER)| cut -b 1-3)
 # Processing parameters #
 #########################
 ALL=
-ALL_DEP=
 
 # dependency on tools.stamp
 ifeq ($(DO_TOOLS),1)
@@ -33,7 +32,7 @@ endif
 
 # dependency on the makefile itself
 ifeq ($(DO_ALLDEP),1)
-ALL_DEP+=Makefile
+.EXTRA_PREREQS+=$(foreach mk, ${MAKEFILE_LIST},$(abspath ${mk}))
 endif
 
 SRC:=$(shell find . -name "*.c")
@@ -53,7 +52,7 @@ endif # DO_MKDBG
 # Rules #
 #########
 .PHONY: all
-all: $(ALL) $(ALL_DEP)
+all: $(ALL)
 	@true
 
 tools.stamp: config/deps.py
@@ -61,58 +60,58 @@ tools.stamp: config/deps.py
 	@pymakehelper touch_mkdir $@
 
 .PHONY: clean
-clean: $(ALL_DEP)
+clean:
 	$(info doing [$@])
 	$(Q)-rm -rf *.o $(BIN_FOLDER)
 
 .PHONY: clean_git
-clean_git: $(ALL_DEP)
+clean_git:
 	$(info doing [$@])
 	$(Q)git clean -qffxd
 
 OBJ_GRID:=obj/grid.o
-$(BIN_FOLDER)/grid: $(OBJ_GRID) $(ALL_DEP)
+$(BIN_FOLDER)/grid: $(OBJ_GRID)
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(CC) -o $@ $(OBJ_GRID) $(LDFLAGS)
 
 OBJ_STICKMAN:=obj/stickman.o obj/draw.o
-$(BIN_FOLDER)/stickman: $(OBJ_STICKMAN) $(ALL_DEP)
+$(BIN_FOLDER)/stickman: $(OBJ_STICKMAN)
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(CC) -o $@ $(OBJ_STICKMAN) $(LDFLAGS)
 
 OBJ_STICKREAD:=obj/stickread.o obj/draw.o
-$(BIN_FOLDER)/stickread: $(OBJ_STICKREAD) $(ALL_DEP)
+$(BIN_FOLDER)/stickread: $(OBJ_STICKREAD)
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(CC) -o $@ $(OBJ_STICKREAD) $(LDFLAGS)
 
 OBJ_DANCE:=obj/dance.o obj/draw.o
-$(BIN_FOLDER)/dance: $(OBJ_DANCE) $(ALL_DEP)
+$(BIN_FOLDER)/dance: $(OBJ_DANCE)
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(CC) -o $@ $(OBJ_DANCE) $(LDFLAGS)
 
 OBJ_XMELTDOWN:=obj/xmeltdown.o
-$(BIN_FOLDER)/xmeltdown: $(OBJ_XMELTDOWN) $(ALL_DEP)
+$(BIN_FOLDER)/xmeltdown: $(OBJ_XMELTDOWN)
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(CC) -o $@ $(OBJ_XMELTDOWN) $(LDFLAGS)
 
 .PHONY: install
-install: $(ALL_DEP)
+install:
 	$(info doing [$@])
 	$(Q)install $(ALL) $(DEST)
 
 .PHONY: depend
-depend: $(ALL_DEP)
+depend:
 	$(info doing [$@])
 	$(Q)makedepend -I/usr/include/linux -I/usr/include/c++/$(GCCVER)/tr1 -I/usr/include/c++/$(GCCVER) -I/usr/include/x86_64-linux-gnu/c++/$(GCCVER_SHORT) -- $(CFLAGS) -- $(SRC)
 	$(Q)rm -f Makefile.bak
 
 .PHONY: debug
-debug: $(ALL_DEP)
+debug:
 	$(info SRC is $(SRC))
 	$(info OBJ is $(OBJ))
 	$(info CC is $(CC))
@@ -121,14 +120,14 @@ debug: $(ALL_DEP)
 	$(info GCCVER_SHORT is $(GCCVER_SHORT))
 
 .PHONY: format_uncrustify
-format_uncrustify: $(ALL_DEP)
+format_uncrustify:
 	$(info doing [$@])
 	$(Q)uncrustify -c support/uncrustify.cfg --no-backup -l C $(SRC)
 
 #################
 # Generic rules #
 #################
-$(OBJ): obj/%.o: src/%.c $(ALL_DEP)
+$(OBJ): obj/%.o: src/%.c
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(CC) $(CFLAGS) -c -o $@ $<
