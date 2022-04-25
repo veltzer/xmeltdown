@@ -1,6 +1,3 @@
-'''
-packages needed for this project
-'''
 packages=[
     #for makedepend(1)
     'xutils-dev',
