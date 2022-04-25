@@ -25,15 +25,17 @@ GCCVER_SHORT:=$(shell echo $(GCCVER)| cut -b 1-3)
 #########################
 ALL=
 
+TOOLS:=tools.stamp
+
 # dependency on tools.stamp
 ifeq ($(DO_TOOLS),1)
 ALL+=tools.stamp
-endif
+endif # DO_TOOLS
 
 # dependency on the makefile itself
 ifeq ($(DO_ALLDEP),1)
 .EXTRA_PREREQS+=$(foreach mk, ${MAKEFILE_LIST},$(abspath ${mk}))
-endif
+endif # DO_ALLDEP
 
 SRC:=$(shell find . -name "*.c")
 OBJ:=$(addprefix obj/,$(notdir $(addsuffix .o,$(basename $(SRC)))))
