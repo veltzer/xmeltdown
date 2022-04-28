@@ -2,7 +2,7 @@
 # Parameters #
 ##############
 # do you want to install the needed tools?
-DO_TOOLS:=0
+DO_TOOLS:=1
 # do you want to debug the makefile ?
 DO_MKDBG:=0
 # do you want dependency on the Makefile itself ?
@@ -29,7 +29,8 @@ TOOLS:=tools.stamp
 
 # dependency on tools.stamp
 ifeq ($(DO_TOOLS),1)
-ALL+=tools.stamp
+.EXTRA_PREREQS+=$(TOOLS)
+ALL+=$(TOOLS)
 endif # DO_TOOLS
 
 # dependency on the makefile itself
@@ -57,9 +58,9 @@ endif # DO_MKDBG
 all: $(ALL)
 	@true
 
-tools.stamp: config/deps.py
+$(TOOLS): packages.txt config/deps.py
 	$(info doing [$@])
-	@pymakehelper touch_mkdir $@
+	$(Q)pymakehelper touch_mkdir $@
 
 .PHONY: clean
 clean:
