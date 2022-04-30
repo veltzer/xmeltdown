@@ -60,6 +60,7 @@ all: $(ALL)
 
 $(TOOLS): packages.txt config/deps.py
 	$(info doing [$@])
+	$(Q)xargs -a packages.txt sudo apt-get -y install > /dev/null
 	$(Q)pymakehelper touch_mkdir $@
 
 .PHONY: clean
