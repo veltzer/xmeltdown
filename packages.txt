@@ -1,2 +1,0 @@
-xutils-dev
-libx11-dev
