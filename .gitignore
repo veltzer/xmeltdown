@@ -1,14 +1,9 @@
-# object files
 *.o
 # makedepend backup file
 Makefile.bak
-# binary files
-bin
-# tools
-/tools
-/tools.stamp
+/bin
 /obj
-# python related
+*.stamp
 __pycache__
 *.pyo
 *.pyc
