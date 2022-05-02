@@ -1,8 +1,6 @@
 ##############
 # Parameters #
 ##############
-# do you want to install the needed tools?
-DO_TOOLS:=1
 # do you want to debug the makefile ?
 DO_MKDBG:=0
 # do you want dependency on the Makefile itself ?
@@ -24,14 +22,6 @@ GCCVER_SHORT:=$(shell echo $(GCCVER)| cut -b 1-3)
 # Processing parameters #
 #########################
 ALL=
-
-TOOLS:=tools.stamp
-
-# dependency on tools.stamp
-ifeq ($(DO_TOOLS),1)
-.EXTRA_PREREQS+=$(TOOLS)
-ALL+=$(TOOLS)
-endif # DO_TOOLS
 
 # dependency on the makefile itself
 ifeq ($(DO_ALLDEP),1)
@@ -57,11 +47,6 @@ endif # DO_MKDBG
 .PHONY: all
 all: $(ALL)
 	@true
-
-$(TOOLS): packages.txt config/deps.py
-	$(info doing [$@])
-	$(Q)xargs -a packages.txt sudo apt-get -y install > /dev/null
-	$(Q)pymakehelper touch_mkdir $@
 
 .PHONY: clean
 clean:
