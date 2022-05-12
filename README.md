@@ -1,5 +1,10 @@
-Xmeltdown
+xmeltdown
 =========
+
+version: 0.0.1
+
+description: utilities for X11
+
 When I was back in the UNI I used to move people away from machine by running
 xmeltdown on their machines. The user is happily working on his machine and
 suddenly the whole screen seems to melt. All you need to run this is X access
@@ -12,11 +17,4 @@ and some cleanups and bug fixes went into this and you can happily run
 xmeltdown again. Copyright of most of the stuff still belongs to the
 original authors. Free source never dies.
 
-					Mark Veltzer, 05/12/2002
-					<mark.veltzer@gmail.com>
-
-P.S. All of my fixes are under the original OSS license.
-
-Copyright
----------
-Mark Veltzer <mark.veltzer@gmail.com>, 2002-2020
+	Mark Veltzer <mark.veltzer@gmail.com>, 2002 - 2022
