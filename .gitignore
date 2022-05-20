@@ -1,10 +1,24 @@
+# generated
+/build/
+/dist/
+/target/
+/out/
+
+# c, c++ stuff
 *.o
-# makedepend backup file
-Makefile.bak
-/bin
-/obj
+/Makefile.bak
+/bin/
+/obj/
+
+# installations
+/external/
+/install/
+
+# python
+__pycache__/
+*.py[oc]
+
+# mine
+/.venv/
+/.pydmt/
 *.stamp
-__pycache__
-*.pyo
-*.pyc
-/.pydmt
