@@ -1,9 +1,14 @@
-xmeltdown
-=========
+## xmeltdown
 
 version: 0.0.1
 
 description: utilities for X11
+
+website: https://veltzer.github.io/xmeltdown
+
+## build
+
+![build](https://github.com/veltzer/xmeltdown/workflows/build/badge.svg)
 
 When I was back in the UNI I used to move people away from machine by running
 xmeltdown on their machines. The user is happily working on his machine and
@@ -16,5 +21,6 @@ server in MIT and rescued them from obscurity. A lot of compilation fixes
 and some cleanups and bug fixes went into this and you can happily run
 xmeltdown again. Copyright of most of the stuff still belongs to the
 original authors. Free source never dies.
+chat with me at [![gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/veltzer/mark.veltzer)
 
-	Mark Veltzer <mark.veltzer@gmail.com>, 2002 - 2022
+Mark Veltzer, Copyright © 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021
