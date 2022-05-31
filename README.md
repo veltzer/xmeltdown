@@ -22,7 +22,7 @@ and some cleanups and bug fixes went into this and you can happily run
 xmeltdown again. Copyright of most of the stuff still belongs to the
 original authors. Free source never dies.
 
-## contact 
+## contact
 
 chat with me at [![gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/veltzer/mark.veltzer)
 
