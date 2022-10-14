@@ -1,6 +1,6 @@
 packages=[
     # for makedepend(1)
-    'xutils-dev',
+    "xutils-dev",
     # for the X11 API
-    'libx11-dev',
+    "libx11-dev",
 ]
