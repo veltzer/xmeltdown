@@ -1,3 +1,4 @@
+name = "xmeltdown"
 description_short = "utilities for X11"
 description_long = """When I was back in the UNI I used to move people away from machine by running
 xmeltdown on their machines. The user is happily working on his machine and
@@ -10,3 +11,5 @@ server in MIT and rescued them from obscurity. A lot of compilation fixes
 and some cleanups and bug fixes went into this and you can happily run
 xmeltdown again. Copyright of most of the stuff still belongs to the
 original authors. Free source never dies."""
+keywords = [
+]
