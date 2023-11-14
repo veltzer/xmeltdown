@@ -6,7 +6,7 @@ description: utilities for X11
 
 website: https://veltzer.github.io/xmeltdown
 
-## build
+## Build
 
 ![build](https://github.com/veltzer/xmeltdown/workflows/build/badge.svg)
 
@@ -22,7 +22,7 @@ and some cleanups and bug fixes went into this and you can happily run
 xmeltdown again. Copyright of most of the stuff still belongs to the
 original authors. Free source never dies.
 
-## contact
+## Contact
 
 chat with me at [![gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/veltzer/mark.veltzer)
 
