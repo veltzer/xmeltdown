@@ -1,5 +1,5 @@
 name = "xmeltdown"
-description_short = "utilities for X11"
+description_short = "A program to melt your screen"
 description_long = """When I was back in the UNI I used to move people away from machine by running
 xmeltdown on their machines. The user is happily working on his machine and
 suddenly the whole screen seems to melt. All you need to run this is X access
