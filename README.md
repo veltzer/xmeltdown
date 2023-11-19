@@ -2,7 +2,7 @@
 
 version: 0.0.1
 
-description: utilities for X11
+description: A program to melt your screen
 
 website: https://veltzer.github.io/xmeltdown
 
