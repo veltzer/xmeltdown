@@ -1,4 +1,4 @@
-make_requires = [
+build_requires = [
     "pymakehelper",
     "pydmt",
 ]
