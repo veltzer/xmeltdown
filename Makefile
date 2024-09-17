@@ -1,5 +1,5 @@
 ##############
-# Parameters #
+# parameters #
 ##############
 # do you want to debug the makefile ?
 DO_MKDBG:=0
@@ -18,15 +18,10 @@ GCCVER:=$(shell gcc --version | head -1 | cut -f 4 -d " ")
 # short version of GCC
 GCCVER_SHORT:=$(shell echo $(GCCVER)| cut -b 1-3)
 
-#########################
-# Processing parameters #
-#########################
+########
+# code #
+########
 ALL=
-
-# dependency on the makefile itself
-ifeq ($(DO_ALLDEP),1)
-.EXTRA_PREREQS+=$(foreach mk, ${MAKEFILE_LIST},$(abspath ${mk}))
-endif # DO_ALLDEP
 
 SRC:=$(shell find . -name "*.c")
 OBJ:=$(addprefix obj/,$(notdir $(addsuffix .o,$(basename $(SRC)))))
@@ -42,7 +37,7 @@ Q:=@
 endif # DO_MKDBG
 
 #########
-# Rules #
+# rules #
 #########
 .PHONY: all
 all: $(ALL)
@@ -113,13 +108,22 @@ format_uncrustify:
 	$(info doing [$@])
 	$(Q)uncrustify -c support/uncrustify.cfg --no-backup -l C $(SRC)
 
-#################
-# Generic rules #
-#################
+############
+# patterns #
+############
 $(OBJ): obj/%.o: src/%.c
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(CC) $(CFLAGS) -c -o $@ $<
+
+##########
+# alldep #
+##########
+# dependency on the makefile itself
+ifeq ($(DO_ALLDEP),1)
+.EXTRA_PREREQS+=$(foreach mk, ${MAKEFILE_LIST},$(abspath ${mk}))
+endif # DO_ALLDEP
+
 
 # DO NOT DELETE
 
