@@ -23,7 +23,7 @@ GCCVER_SHORT:=$(shell echo $(GCCVER)| cut -b 1-3)
 ########
 ALL=
 
-SRC:=$(shell find . -name "*.c")
+SRC:=$(shell find . -type f -and -name "*.c")
 OBJ:=$(addprefix obj/,$(notdir $(addsuffix .o,$(basename $(SRC)))))
 ALL+=$(BIN_FOLDER)/stickman $(BIN_FOLDER)/stickread $(BIN_FOLDER)/dance $(BIN_FOLDER)/xmeltdown $(BIN_FOLDER)/grid
 
