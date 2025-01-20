@@ -15,4 +15,5 @@ keywords = [
         "xmeltdown",
         "X window system",
         "graphics",
+        "spoofing",
 ]
