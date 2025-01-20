@@ -12,4 +12,7 @@ and some cleanups and bug fixes went into this and you can happily run
 xmeltdown again. Copyright of most of the stuff still belongs to the
 original authors. Free source never dies."""
 keywords = [
+        "xmeltdown",
+        "X window system",
+        "graphics",
 ]
