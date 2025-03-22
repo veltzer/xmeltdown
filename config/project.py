@@ -1,3 +1,4 @@
+""" project definitions """
 name = "xmeltdown"
 description_short = "A program to melt your screen"
 description_long = """When I was back in the UNI I used to move people away from machine by running
