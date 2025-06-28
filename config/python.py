@@ -1,5 +1,7 @@
+""" python deps for this project """
+
 build_requires = [
-    "pymakehelper",
     "pydmt",
+    "pymakehelper",
 ]
 requires = build_requires
