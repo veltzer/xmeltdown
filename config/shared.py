@@ -3,11 +3,20 @@
 PCONFIG: list[str] = [
     "pyclassifiers",
 ]
+# build for python module
 PBUILD: list[str] = [
     "hatch",
     "pydmt",
     "pymakehelper",
+    "pycmdtools"
 ]
+# build for non python module
+BUILD: list[str] = [
+    "pydmt",
+    "pymakehelper",
+    "pycmdtools",
+]
+# testing for python modules
 PTEST: list[str] = [
     "pylint",
     "pytest",
