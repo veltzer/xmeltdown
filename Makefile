@@ -12,7 +12,9 @@ LDFLAGS:=-lX11 -lm
 # where to install ?
 DEST:=/usr/local/bin
 # where to put binaries ?
-BIN_FOLDER:=bin
+BIN_FOLDER:=out/bin
+# where to put objects?
+OBJ_FOLDER:=out/obj
 # version of gcc
 GCCVER:=$(shell gcc --version | head -1 | cut -f 4 -d " ")
 # short version of GCC
@@ -24,7 +26,7 @@ GCCVER_SHORT:=$(shell echo $(GCCVER)| cut -b 1-3)
 ALL=
 
 SRC:=$(shell find . -type f -and -name "*.c")
-OBJ:=$(addprefix obj/,$(notdir $(addsuffix .o,$(basename $(SRC)))))
+OBJ:=$(addprefix out/obj/,$(notdir $(addsuffix .o,$(basename $(SRC)))))
 ALL+=$(BIN_FOLDER)/stickman $(BIN_FOLDER)/stickread $(BIN_FOLDER)/dance $(BIN_FOLDER)/xmeltdown $(BIN_FOLDER)/grid
 
 # silent stuff
@@ -46,38 +48,38 @@ all: $(ALL)
 .PHONY: clean
 clean:
 	$(info doing [$@])
-	$(Q)-rm -rf *.o $(BIN_FOLDER)
+	$(Q)-rm -rf *.o out
 
-.PHONY: clean_git
-clean_git:
+.PHONY: clean_hard
+clean_hard:
 	$(info doing [$@])
 	$(Q)git clean -qffxd
 
-OBJ_GRID:=obj/grid.o
+OBJ_GRID:=$(OBJ_FOLDER)/grid.o
 $(BIN_FOLDER)/grid: $(OBJ_GRID)
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(CC) -o $@ $(OBJ_GRID) $(LDFLAGS)
 
-OBJ_STICKMAN:=obj/stickman.o obj/draw.o
+OBJ_STICKMAN:=$(OBJ_FOLDER)/stickman.o $(OBJ_FOLDER)/draw.o
 $(BIN_FOLDER)/stickman: $(OBJ_STICKMAN)
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(CC) -o $@ $(OBJ_STICKMAN) $(LDFLAGS)
 
-OBJ_STICKREAD:=obj/stickread.o obj/draw.o
+OBJ_STICKREAD:=$(OBJ_FOLDER)/stickread.o $(OBJ_FOLDER)/draw.o
 $(BIN_FOLDER)/stickread: $(OBJ_STICKREAD)
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(CC) -o $@ $(OBJ_STICKREAD) $(LDFLAGS)
 
-OBJ_DANCE:=obj/dance.o obj/draw.o
+OBJ_DANCE:=$(OBJ_FOLDER)/dance.o $(OBJ_FOLDER)/draw.o
 $(BIN_FOLDER)/dance: $(OBJ_DANCE)
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(CC) -o $@ $(OBJ_DANCE) $(LDFLAGS)
 
-OBJ_XMELTDOWN:=obj/xmeltdown.o
+OBJ_XMELTDOWN:=$(OBJ_FOLDER)/xmeltdown.o
 $(BIN_FOLDER)/xmeltdown: $(OBJ_XMELTDOWN)
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
@@ -96,10 +98,10 @@ depend:
 
 .PHONY: debug
 debug:
+	$(info ALL is $(ALL))
 	$(info SRC is $(SRC))
 	$(info OBJ is $(OBJ))
 	$(info CC is $(CC))
-	$(info ALL is $(ALL))
 	$(info GCCVER is $(GCCVER))
 	$(info GCCVER_SHORT is $(GCCVER_SHORT))
 
@@ -111,7 +113,7 @@ format_uncrustify:
 ############
 # patterns #
 ############
-$(OBJ): obj/%.o: src/%.c
+$(OBJ): $(OBJ_FOLDER)/%.o: src/%.c
 	$(info doing [$@])
 	$(Q)mkdir -p $(dir $@)
 	$(Q)$(CC) $(CFLAGS) -c -o $@ $<

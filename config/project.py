@@ -1,4 +1,5 @@
 """ project definitions """
+
 name = "xmeltdown"
 description_short = "A program to melt your screen"
 description_long = """When I was back in the UNI I used to move people away from machine by running
@@ -13,8 +14,8 @@ and some cleanups and bug fixes went into this and you can happily run
 xmeltdown again. Copyright of most of the stuff still belongs to the
 original authors. Free source never dies."""
 keywords = [
-        "xmeltdown",
-        "X window system",
-        "graphics",
-        "spoofing",
+    "xmeltdown",
+    "X window system",
+    "graphics",
+    "spoofing",
 ]
