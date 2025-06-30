@@ -8,7 +8,7 @@ PBUILD: list[str] = [
     "hatch",
     "pydmt",
     "pymakehelper",
-    "pycmdtools"
+    "pycmdtools",
 ]
 # build for non python module
 BUILD: list[str] = [
@@ -23,4 +23,11 @@ PTEST: list[str] = [
     "mypy",
     "ruff",
     # "pytest-cov",
+]
+# testing for non python modules
+TEST: list[str] = [
+    "pylint",
+    "pytest",
+    "mypy",
+    "ruff",
 ]
