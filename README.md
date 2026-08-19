@@ -21,9 +21,8 @@ server in MIT and rescued them from obscurity. A lot of compilation fixes
 and some cleanups and bug fixes went into this and you can happily run
 xmeltdown again. Copyright of most of the stuff still belongs to the
 original authors. Free source never dies.
-
 ## Contact
 
 chat with me at [![gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/veltzer/mark.veltzer)
 
-Mark Veltzer, Copyright © 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025
+Mark Veltzer, Copyright © 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026
