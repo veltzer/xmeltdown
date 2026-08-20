@@ -12,8 +12,14 @@ src_dirs = ["tera.templates"]
 # uncrustify target was a manual .PHONY format step, not part of the build.)
 [processor.explicit.xmeltdown]
 command = "scripts/build_xmeltdown.py"
-src_dirs = ["src"]
-src_extensions = [".c"]
+input_globs = ["src/*.c"]
+output_files = [
+    "out/bin/grid",
+    "out/bin/stickman",
+    "out/bin/stickread",
+    "out/bin/dance",
+    "out/bin/xmeltdown",
+]
 
 # X11 headers/libs the demos link against, so CI can build them.
 [dependencies]
