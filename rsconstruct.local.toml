@@ -4,3 +4,19 @@
 # with load_lua (the pyanyzip pattern). The pydmt mako templates are gone.
 [processor.tera]
 src_dirs = ["tera.templates"]
+
+# The Makefile compiled src/*.c to objects and linked five X11 binaries, with
+# draw.o shared across stickman/stickread/dance, all against -lX11 -lm. That
+# shared-object grouping is beyond the single-file C processor, so
+# scripts/build_xmeltdown.py runs the exact compile+link. (The Makefile's
+# uncrustify target was a manual .PHONY format step, not part of the build.)
+[processor.explicit.xmeltdown]
+command = "scripts/build_xmeltdown.py"
+src_dirs = ["src"]
+src_extensions = [".c"]
+
+# X11 headers/libs the demos link against, so CI can build them.
+[dependencies]
+system = [
+    "libx11-dev",
+]
