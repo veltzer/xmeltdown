@@ -1,4 +1,4 @@
-NAME = "xmeltdown"
+NAME = "c-xmeltdown"
 DESCRIPTION_SHORT = "A program to melt your screen"
 DESCRIPTION_LONG = [[When I was back in the UNI I used to move people away from machine by running
 xmeltdown on their machines. The user is happily working on his machine and

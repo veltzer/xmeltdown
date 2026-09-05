@@ -1,8 +1,8 @@
-# *xmeltdown* project by Mark Veltzer
+# *c-xmeltdown* project by Mark Veltzer
 
 description: A program to melt your screen
 
-project website: https://veltzer.github.io/xmeltdown
+project website: https://veltzer.github.io/c-xmeltdown
 
 author: Mark Veltzer
 
@@ -12,11 +12,11 @@ version: 0.0.1
 
 ## github
 
-![License](https://img.shields.io/github/license/veltzer/xmeltdown)
+![License](https://img.shields.io/github/license/veltzer/c-xmeltdown)
 
 ## build
 
-![build](https://github.com/veltzer/xmeltdown/workflows/build/badge.svg)
+![build](https://github.com/veltzer/c-xmeltdown/workflows/build/badge.svg)
 
 ## contact me
 
