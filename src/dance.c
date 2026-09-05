@@ -13,7 +13,7 @@
 #define LINE_WIDTH 0	/* single pixel */
 
 void Initialize(int argc, char** argv);
-void DanceMainLoop(int* routine);
+void DanceMainLoop(const int* routine);
 void ClearFrame();
 void DrawTween(double factor, int which, int curbuf);
 void ShowFrame(int curbuf);
@@ -22,8 +22,8 @@ void HandleKeyPress(XKeyEvent* pevent);
 void RandomMove();
 void DrawSkel(SkeletonPtr s, GC gc, Window where);
 int Fill(FILE* filep, RayPtr rayp);
-Skeleton**ReadFile(char* filename);
-int*ReadRoutineFile(char* filename);
+Skeleton**ReadFile(const char* filename);
+int*ReadRoutineFile(const char* filename);
 
 extern Display* dpy;
 extern Window win;
@@ -40,11 +40,11 @@ SkeletonPtr fromskel[PLAYERS], toskel[PLAYERS], tweenskel[PLAYERS];
 
 int main(int argc, char** argv)
 {
-	char* posefile;
-	char* routinefile;
+	const char* posefile;
+	const char* routinefile;
 	XGCValues my_gcvalues;
 	int i;
-	int* routine=NULL;
+	const int* routine=NULL;
 	if (argc < 2) {
 		printf ("Usage: %s posefile [framecount [routinefile]\n", argv[0]);
 		exit (1);
@@ -112,14 +112,14 @@ int main(int argc, char** argv)
 	return(0);
 }
 
-void DanceMainLoop(int* routine)
+void DanceMainLoop(const int* routine)
 {
 	double factor;
 	XEvent my_event;
 	int stepctr, i;
-	int curbuf=0;
+	int buf=0;
 	int newpose;
-	int* routine1=routine;
+	const int* routine1=routine;
 	if (!routine)
 		for (i=0; i < PLAYERS; i++) {
 			fromskel[i]=skellist[0];
@@ -135,10 +135,10 @@ void DanceMainLoop(int* routine)
 			factor=(double) (steps-stepctr)/(double) steps;
 			ClearFrame();
 			for (i=0; i < PLAYERS; i++)
-				DrawTween(factor, i, curbuf);
-			ShowFrame(curbuf);
+				DrawTween(factor, i, buf);
+			ShowFrame(buf);
 
-			curbuf=!curbuf;
+			buf=!buf;
 
 			clock_usleep(30000L);
 			if (XPending(dpy) && XCheckMaskEvent(dpy, KeyPressMask, &my_event)) {
@@ -209,7 +209,6 @@ void DrawTween(double factor, int which, int curbuf)
  * which player
  * which buffer not to draw into */
 {
-	RayPtr toray, fromray, tweenray;
 	int bonesize=sizeof(Ray);
 	int bone;
 /*	int		stepctr, skelctr; */
@@ -219,6 +218,7 @@ void DrawTween(double factor, int which, int curbuf)
  * int		flag3 = 1;
  * int		flag4 = 0; */
 	for (bone=0; bone < 11; bone++) {
+		RayPtr toray, fromray, tweenray;
 		fromray=(RayPtr) ((long) &(fromskel[which]->torso)+(long) (bone*bonesize));
 		toray=(RayPtr) ((long) &(toskel[which]->torso)+(long) (bone*bonesize));
 		tweenray=(RayPtr) ((long) &(tweenskel[which]->torso)+(long) (bone*bonesize));
@@ -256,12 +256,12 @@ void ShowFrame(int curbuf)
 ** return list of integers corresponding to poses to strike, in order
 */
 
-int*ReadRoutineFile(char* filename)
+int*ReadRoutineFile(const char* filename)
 {
 	FILE* infile;
 	int okayflag=1;
 	int* retval;
-	int numread=0;
+	int count=0;
 
 	infile=fopen(filename, "r");
 	if (infile == NULL) {
@@ -269,19 +269,29 @@ int*ReadRoutineFile(char* filename)
 		exit(1);
 	}
 	retval=(int *) calloc (1, sizeof (int));
-	numread=0;
+	if (retval == NULL) {
+		perror("calloc");
+		exit(1);
+	}
 	while (okayflag >= 0) {
-		okayflag=fscanf(infile, "%d\n", &(retval[numread]));
+		okayflag=fscanf(infile, "%d\n", &(retval[count]));
 		if (okayflag >= 0) {
-			numread++;
-			retval=(int *) realloc (retval, (numread+1)*sizeof (int));
+			int* grown;
+			count++;
+			grown=(int *) realloc (retval, (count+1)*sizeof (int));
+			if (grown == NULL) {
+				perror("realloc");
+				free(retval);
+				exit(1);
+			}
+			retval=grown;
 		}
 	}
-	retval[numread]=-1;
+	retval[count]=-1;
 	return (retval);
 }
 
-Skeleton**ReadFile(char* filename)
+Skeleton**ReadFile(const char* filename)
 {
 	FILE* infile;
 	Skeleton** retval;
@@ -294,7 +304,15 @@ Skeleton**ReadFile(char* filename)
 		exit(1);
 	}
 	retval=(Skeleton **) calloc (2, sizeof (Skeleton *));
+	if (retval == NULL) {
+		perror("calloc");
+		exit(1);
+	}
 	retval[0]=(Skeleton *) calloc (1, sizeof (Skeleton));
+	if (retval[0] == NULL) {
+		perror("calloc");
+		exit(1);
+	}
 	retval[1]=NULL;
 	current=retval[0];
 	okayflag=fscanf(infile, "%d, %d, %d\n", &tempradius, &waistx, &waisty);
@@ -320,12 +338,20 @@ Skeleton**ReadFile(char* filename)
 			numread, numread == 1 ? "." : "s.");
 		okayflag=fscanf(infile, "%d, %d, %d\n", &tempradius, &waistx, &waisty);
 		if (okayflag >= 0) {
+			Skeleton** grown;
 			numread++;
-			retval=(Skeleton **)
-				realloc (
-				retval, (numread+1)*sizeof (Skeleton *));
-
+			grown=(Skeleton **) realloc (retval, (numread+1)*sizeof (Skeleton *));
+			if (grown == NULL) {
+				perror("realloc");
+				free(retval);
+				exit(1);
+			}
+			retval=grown;
 			retval[numread-1]=(Skeleton *) calloc (1, sizeof (Skeleton));
+			if (retval[numread-1] == NULL) {
+				perror("calloc");
+				exit(1);
+			}
 
 			retval[numread]=0;
 			current=retval[numread-1];

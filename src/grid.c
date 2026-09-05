@@ -38,9 +38,9 @@ void Initialize(int argc, char** argv)
 }
 
 void DrawGrid(void) {
-	int fromx, fromy, tox, toy;
 	int counter;
 	for (counter=0; counter < 16; counter++) {
+		int fromx, fromy, tox, toy;
 		fromx=counter*10;
 		fromy=0;
 		tox=counter*10;

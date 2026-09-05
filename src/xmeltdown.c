@@ -64,7 +64,6 @@ Window win;
 GC copygc, fillgc;
 int screen;
 int depth;
-short** heights;
 
 void usage(void) {
 	fprintf(stderr, "Usage: meltdown [-planes] [-display <displayname>]\n");
@@ -129,15 +128,23 @@ int main(int argc, char** argv, char** envp) {
 void do_planes() {
 	int over=0;
 	int finished=0;
-	int width, xloc, yloc, dist, size, i;
+	int dist, size, i;
 	short** heights;
 
-	heights=(short **) malloc(DisplayPlanes(dpy, screen));
+	heights=(short **) malloc(DisplayPlanes(dpy, screen)*sizeof(short *));
+	if (heights == NULL) {
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
 	for (i=0; i < DisplayPlanes(dpy, screen); i++) {
-		heights[i]=(short *) calloc(sizeof(short),
-			DisplayWidth(dpy, screen));
+		heights[i]=(short *) calloc(DisplayWidth(dpy, screen), sizeof(short));
+		if (heights[i] == NULL) {
+			perror("calloc");
+			exit(EXIT_FAILURE);
+		}
 	}
 	while (!over) {
+		int width, xloc, yloc;
 		depth=rnd(DisplayPlanes(dpy, screen));
 		width=rnd(MIN_WIDTH)+WIDTH_ADD;
 
@@ -177,12 +184,17 @@ void do_planes() {
 void do_all() {
 	int over;
 	int finished=0;
-	int width, xloc, yloc, dist, size, i;
+	int dist, size, i;
 	short* heights;
 
-	heights=(short *) calloc(sizeof(short), DisplayWidth(dpy, screen));
+	heights=(short *) calloc(DisplayWidth(dpy, screen), sizeof(short));
+	if (heights == NULL) {
+		perror("calloc");
+		exit(EXIT_FAILURE);
+	}
 	over=0;
 	while (!over) {
+		int width, xloc, yloc;
 		depth=rnd(DisplayPlanes(dpy, screen));
 		width=rnd(MIN_WIDTH)+WIDTH_ADD;
 

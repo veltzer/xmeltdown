@@ -9,12 +9,12 @@
 void Initialize(int, char**);
 void DrawSkel(SkeletonPtr s, GC gc, Window where);
 void HandleKeyPress(XKeyEvent* pevent);
-void HandleButtonPress(XButtonEvent* pevent);
+void HandleButtonPress(const XButtonEvent* pevent);
 void HandleButtonRelease(XButtonEvent* pevent);
-void HandleMotion(XMotionEvent* pevent);
+void HandleMotion(const XMotionEvent* pevent);
 void DumpSkel(SkeletonPtr s);
 void FlashRay(RayPtr targetray);
-RayPtr FindNearestRay(XButtonEvent* pevent);
+RayPtr FindNearestRay(const XButtonEvent* pevent);
 double FindDistance(int x, int y, RayPtr rayp);
 
 extern Display* dpy;
@@ -141,10 +141,9 @@ void HandleButtonRelease(XButtonEvent* pevent)
 	DrawSkel(&bones, unset_gc, buffer[0]);
 }
 
-void HandleMotion(XMotionEvent* pevent)
+void HandleMotion(const XMotionEvent* pevent)
 {
 	int newx, newy, oldx, oldy;
-	double newtheta, totaltheta, newr;
 	RayPtr fooray;
 
 	DrawSkel(&bones, set_gc, buffer[0]);
@@ -157,6 +156,7 @@ void HandleMotion(XMotionEvent* pevent)
 ** Spin the ray around its anchor
 */
 	if (ButtonDown == 1) {
+		double newtheta, totaltheta;
 		if (oldx == newx)
 			newx++;
 		newtheta=atan((double)(oldy-newy)/(double)(oldx-newx));
@@ -178,14 +178,14 @@ void HandleMotion(XMotionEvent* pevent)
 ** Stretch the ray out from its anchor
 */
 	if (ButtonDown == 3) {
-		newr=FindDistance(newx, newy, targetray->anchor);
+		double newr=FindDistance(newx, newy, targetray->anchor);
 		targetray->r=newr;
 		DrawSkel(&bones, unset_gc, buffer[0]);
 		FlashRay (targetray);
 	}
 }
 
-void HandleButtonPress(XButtonEvent* pevent)
+void HandleButtonPress(const XButtonEvent* pevent)
 {
 	targetray=FindNearestRay(pevent);
 	switch (pevent->button) {
@@ -230,9 +230,9 @@ void FlashRay(RayPtr targetray)
 		targetray->anchor->x, targetray->anchor->y);
 }
 
-RayPtr FindNearestRay(XButtonEvent* pevent) {
+RayPtr FindNearestRay(const XButtonEvent* pevent) {
 	RayPtr retval=NULL;
-	double olddist, newdist;
+	double olddist;
 	int x, y;
 	RayPtr stepray;
 	int stepsize=sizeof(Ray);
@@ -246,7 +246,7 @@ RayPtr FindNearestRay(XButtonEvent* pevent) {
 ** ray elements of the "bones" data structure. So there! Neah neah neah.
 */
 	for (stepray=&(bones.torso); stepray <= &(bones.ltricep); stepray=(RayPtr) ((long) stepray+(long) stepsize)) {
-		newdist=(FindDistance(x, y, stepray));
+		double newdist=(FindDistance(x, y, stepray));
 		if (newdist < olddist) {
 			retval=stepray;
 			olddist=newdist;

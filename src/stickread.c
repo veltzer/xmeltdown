@@ -6,11 +6,11 @@
 #include "stickman.h"
 
 void Initialize(int argc, char** argv);
-void HandleKeyPress(XKeyEvent* pevent);
+void HandleKeyPress(const XKeyEvent* pevent);
 void Interpolate(Skeleton** skellist, int steps);
 int Fill(FILE* filep, RayPtr rayp);
 void DrawSkel(SkeletonPtr s, GC gc, Window where);
-Skeleton** ReadFile(char* filename);
+Skeleton** ReadFile(const char* filename);
 
 extern Display* dpy;
 extern Window win;
@@ -23,7 +23,7 @@ static GC set_gc, noop_gc, unset_gc, neg_gc;
 int main(int argc, char** argv)
 {
 	Skeleton** skellist;
-	char* inputfile;
+	const char* inputfile;
 	int framecount;
 	XGCValues my_gcvalues;
 	XEvent my_event;
@@ -83,7 +83,7 @@ int main(int argc, char** argv)
 			Interpolate(skellist, framecount);
 	}
 }
-void HandleKeyPress(XKeyEvent* pevent)
+void HandleKeyPress(const XKeyEvent* pevent)
 {
 	if (pevent->keycode == 'q') ;
 	exit(0);
@@ -93,7 +93,7 @@ void Interpolate(Skeleton** skellist, int steps)
 {
 	RayPtr to, from, tweenray;
 	int bonesize=sizeof(Ray);
-	Skeleton* skel1, *skel2;
+	Skeleton* skel1;
 	int stepctr, skelctr, bone;
 	Skeleton tween1;
 	// Skeleton	tween2;
@@ -102,7 +102,6 @@ void Interpolate(Skeleton** skellist, int steps)
 	Skeleton* newskel=NULL;
 	/* Skeleton *tempskel; */
 	int curbuf=0;
-	int flag1=1;
 	int flag2=1;
 	int flag3=1;
 	int flag4=0;
@@ -110,6 +109,7 @@ void Interpolate(Skeleton** skellist, int steps)
 	newskel=&tween1;
 	// oldskel = &tween2;
 	for (skelctr=0; skellist[skelctr+1] != NULL; skelctr++) {
+		Skeleton* skel2;
 		skel1=skellist[skelctr];
 		skel2=skellist[skelctr+1];
 
@@ -139,7 +139,7 @@ void Interpolate(Skeleton** skellist, int steps)
 ** Real double-buffering...clear the hidden window, draw the skeleton
 ** in it, bring it to the top.
 */
-			if (flag1 == 1) XClearWindow(dpy, buffer[!curbuf]);
+			XClearWindow(dpy, buffer[!curbuf]);
 			if (!flag2 && flag4) XRaiseWindow(dpy, buffer[!curbuf]);
 			if (!flag2 && !flag4) {
 				XMapWindow(dpy, buffer[!curbuf]);
@@ -171,7 +171,7 @@ void Interpolate(Skeleton** skellist, int steps)
 	}
 }
 
-Skeleton**ReadFile(char* filename)
+Skeleton**ReadFile(const char* filename)
 {
 	FILE* infile;
 	Skeleton** retval;
@@ -184,7 +184,15 @@ Skeleton**ReadFile(char* filename)
 		exit(1);
 	}
 	retval=(Skeleton **) calloc (2, sizeof (Skeleton *));
+	if (retval == NULL) {
+		perror("calloc");
+		exit(1);
+	}
 	retval[0]=(Skeleton *) calloc (1, sizeof (Skeleton));
+	if (retval[0] == NULL) {
+		perror("calloc");
+		exit(1);
+	}
 	retval[1]=NULL;
 	current=retval[0];
 	okayflag=fscanf(infile, "%d, %d, %d\n", &tempradius, &waistx, &waisty);
@@ -209,12 +217,20 @@ Skeleton**ReadFile(char* filename)
 			numread, numread == 1 ? "." : "s.");
 		okayflag=fscanf(infile, "%d, %d, %d\n", &tempradius, &waistx, &waisty);
 		if (okayflag >= 0) {
+			Skeleton** grown;
 			numread++;
-			retval=(Skeleton **)
-				realloc (
-				retval, (numread+1)*sizeof (Skeleton *));
-
+			grown=(Skeleton **) realloc (retval, (numread+1)*sizeof (Skeleton *));
+			if (grown == NULL) {
+				perror("realloc");
+				free(retval);
+				exit(1);
+			}
+			retval=grown;
 			retval[numread-1]=(Skeleton *)calloc (1, sizeof (Skeleton));
+			if (retval[numread-1] == NULL) {
+				perror("calloc");
+				exit(1);
+			}
 
 			retval[numread]=0;
 			current=retval[numread-1];
